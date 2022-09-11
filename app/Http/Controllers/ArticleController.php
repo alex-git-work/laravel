@@ -2,13 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreArticleRequest;
 use App\Models\Article;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Illuminate\Support\Str;
-use Illuminate\Validation\Rule;
 
 class ArticleController extends Controller
 {
@@ -25,45 +23,12 @@ class ArticleController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param Request $request
+     * @param StoreArticleRequest $request
      * @return RedirectResponse
      */
-    public function store(Request $request): RedirectResponse
+    public function store(StoreArticleRequest $request): RedirectResponse
     {
-        $rules = [
-            'status' => [Rule::in(Article::STATUSES)],
-            'preview' => ['required', 'string', 'max:255'],
-            'body' => ['required', 'string'],
-            'slug' => ['required', 'string', 'unique:' . Article::class . ',slug', 'regex:/^[a-z0-9]+(?:[_-][a-z0-9]+)*$/'],
-        ];
-
-        $messages = [
-            'title.required' => 'Поле Название страницы обязательно для заполнения',
-            'title.string' => 'Поле должно быть строкой',
-            'title.between' => 'Поле Название страницы должно быть не менее 5 и не более 100 символов',
-            'status.in' => 'Недопустимое значение статуса',
-            'preview.required' => 'Поле Краткое описание статьи обязательно для заполнения',
-            'preview.string' => 'Поле должно быть строкой',
-            'preview.max' => 'Длина описания не должна превышать 255 символов',
-            'body.required' => 'Поле Основной текст обязательно для заполнения',
-            'body.string' => 'Поле должно быть строкой',
-            'slug.string' => 'Поле должно быть строкой',
-            'slug.unique' => 'Такой slug уже занят',
-            'slug.regex' => 'Введенное значение не соответствует условиям',
-        ];
-
-        $validated = $request->validate([
-            'title' => ['required', 'string', 'between:5,100']
-        ], $messages);
-
-        if ($request->get('slug') === null) {
-            $request->merge(['slug' => Str::slug($validated['title'])]);
-            $rules['slug'] = ['unique:' . Article::class . ',slug'];
-        }
-
-        $validated = array_merge($validated, $request->validate($rules, $messages));
-
-        Article::create($validated);
+        Article::create($request->validated());
 
         return redirect()->back()->with('success', 'Статья успешно добавлена');
     }
@@ -79,5 +44,45 @@ class ArticleController extends Controller
         return view('articles.view', [
             'article' => $article,
         ]);
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param Article $article
+     * @return View
+     */
+    public function edit(Article $article): View
+    {
+        return view('articles.edit', [
+            'article' => $article,
+        ]);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param StoreArticleRequest $request
+     * @param Article $article
+     * @return RedirectResponse
+     */
+    public function update(StoreArticleRequest $request, Article $article): RedirectResponse
+    {
+        $article->update($request->validated());
+
+        return redirect()->route('article.edit', ['article' => $article])->with('success', 'Статья успешно обновлена');
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param Article $article
+     * @return RedirectResponse
+     */
+    public function destroy(Article $article): RedirectResponse
+    {
+        $article->delete();
+
+        return redirect()->route('index')->with('success', 'Статья успешно удалена');
     }
 }
