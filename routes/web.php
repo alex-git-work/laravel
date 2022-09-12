@@ -33,8 +33,4 @@ Route::get('/admin/feedback', function () {
     return view('feedback', ['messages' => Message::all()->sortByDesc('created_at')]);
 })->name('admin.feedback');
 
-Route::get('/article/create', [ArticleController::class, 'create'])->name('article.create');
-
-Route::get('/article/{article:slug}', [ArticleController::class, 'show'])->name('article.show');
-
-Route::post('article', [ArticleController::class, 'store'])->name('article.store');
+Route::resource('article', ArticleController::class)->except('index');

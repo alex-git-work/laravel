@@ -42,6 +42,14 @@ class Article extends Model
     ];
 
     /**
+     * {@inheritdoc}
+     */
+    public function getRouteKeyName(): string
+    {
+        return 'slug';
+    }
+
+    /**
      * @param Builder $query
      * @param string $direction
      * @return Builder
