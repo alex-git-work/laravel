@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
 /**
+ * This is the model class for table "messages".
+ *
  * @property int $id
  * @property string $email
  * @property string $body

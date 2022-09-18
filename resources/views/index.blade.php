@@ -25,8 +25,8 @@ use App\Models\Article;
                 <p class="blog-post-meta">{{ $article->created_at->translatedFormat('j F Y') }}</p>
                 <p>{{ $article->preview }}</p>
                 <br>
-                <a class="float-left" href="{{ route('article.show', ['article' => $article->slug]) }}">Читать далее</a>
-                <a class="float-right text-success" href="{{ route('article.edit', ['article' => $article->slug]) }}">Редактировать</a>
+                <a class="float-left" href="{{ route('article.show', ['article' => $article]) }}">Читать далее</a>
+                <a class="float-right text-success" href="{{ route('article.edit', ['article' => $article]) }}">Редактировать</a>
             </div><!-- /.blog-post -->
         @endforeach
     @else

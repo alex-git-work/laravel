@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
+ * This is the model class for table "articles".
+ *
  * @property int $id
  * @property int $status
  * @property string $title

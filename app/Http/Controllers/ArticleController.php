@@ -8,6 +8,10 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controller;
 
+/**
+ * Class ArticleController
+ * @package App\Http\Controllers
+ */
 class ArticleController extends Controller
 {
     /**

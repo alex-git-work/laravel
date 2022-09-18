@@ -8,6 +8,10 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 
+/**
+ * Class StoreArticleRequest
+ * @package App\Http\Requests
+ */
 class StoreArticleRequest extends FormRequest
 {
     /**
