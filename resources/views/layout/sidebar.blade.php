@@ -1,3 +1,14 @@
+@php
+
+/**
+ * @var Collection $cloud
+ * @var Tag $tag
+ */
+
+use App\Models\Tag;
+use Illuminate\Database\Eloquent\Collection;
+
+@endphp
         <aside class="col-md-4 blog-sidebar">
             <div class="p-3 mb-3 bg-light rounded">
                 <h4 class="font-italic">About</h4>
@@ -5,21 +16,12 @@
             </div>
 
             <div class="p-3">
-                <h4 class="font-italic">Archives</h4>
-                <ol class="list-unstyled mb-0">
-                    <li><a href="#">March 2014</a></li>
-                    <li><a href="#">February 2014</a></li>
-                    <li><a href="#">January 2014</a></li>
-                    <li><a href="#">December 2013</a></li>
-                    <li><a href="#">November 2013</a></li>
-                    <li><a href="#">October 2013</a></li>
-                    <li><a href="#">September 2013</a></li>
-                    <li><a href="#">August 2013</a></li>
-                    <li><a href="#">July 2013</a></li>
-                    <li><a href="#">June 2013</a></li>
-                    <li><a href="#">May 2013</a></li>
-                    <li><a href="#">April 2013</a></li>
-                </ol>
+                <h4 class="font-italic">Метки</h4>
+                @if($cloud->isNotEmpty())
+                    @foreach($cloud as $tag)
+                        <a class="badge badge-secondary text-white" href="{{ route('tag.index', ['tag' => $tag]) }}">{{ $tag->name }}</a>
+                    @endforeach
+                @endif
             </div>
 
             <div class="p-3">

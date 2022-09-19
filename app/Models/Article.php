@@ -4,8 +4,10 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
  * This is the model class for table "articles".
@@ -18,6 +20,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $slug
  * @property Carbon $created_at
  * @property Carbon $updated_at
+ *
+ * @property Collection $tags
  *
  * @method static Builder active
  * @method static Model create(array $attributes)
@@ -49,6 +53,14 @@ class Article extends Model
     public function getRouteKeyName(): string
     {
         return 'slug';
+    }
+
+    /**
+     * @return BelongsToMany
+     */
+    public function tags(): BelongsToMany
+    {
+        return $this->belongsToMany(Tag::class);
     }
 
     /**

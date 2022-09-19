@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\MessageController;
+use App\Http\Controllers\TagsController;
 use App\Models\Article;
 use App\Models\Message;
 use Illuminate\Support\Facades\Route;
@@ -18,12 +19,10 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('index', ['articles' => Article::active()->get()]);
+    return view('index', ['articles' => Article::active()->with('tags')->get()]);
 })->name('index');
 
-Route::get('/about', function () {
-    return view('about');
-})->name('about');
+Route::get('/about', fn () => view('about'))->name('about');
 
 Route::get('/contacts', [MessageController::class, 'create'])->name('contacts.create');
 
@@ -34,3 +33,5 @@ Route::get('/admin/feedback', function () {
 })->name('admin.feedback');
 
 Route::resource('article', ArticleController::class)->except('index');
+
+Route::get('/tag/{tag}', [TagsController::class, 'index'])->name('tag.index');

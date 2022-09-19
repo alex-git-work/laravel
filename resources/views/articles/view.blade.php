@@ -20,6 +20,7 @@ use App\Models\Article;
         <p>{{ $article->preview }}</p>
         <hr>
         <p>{{ $article->body }}</p>
+        @include('layout.tags', ['article' => $article])
         <a href="{{ route('index') }}"><- На главную</a>
     </div>
 @endsection
