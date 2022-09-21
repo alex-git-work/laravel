@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreArticleRequest;
 use App\Models\Article;
+use App\Services\TagsSynchronizer;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controller;
@@ -28,11 +29,14 @@ class ArticleController extends Controller
      * Store a newly created resource in storage.
      *
      * @param StoreArticleRequest $request
+     * @param TagsSynchronizer $synchronizer
      * @return RedirectResponse
      */
-    public function store(StoreArticleRequest $request): RedirectResponse
+    public function store(StoreArticleRequest $request, TagsSynchronizer $synchronizer): RedirectResponse
     {
-        Article::create($request->validated());
+        $article = new Article($request->validated());
+        $article->save();
+        $synchronizer->sync($request->getTags(), $article);
 
         return redirect()->back()->with('success', 'Статья успешно добавлена');
     }
@@ -68,11 +72,13 @@ class ArticleController extends Controller
      *
      * @param StoreArticleRequest $request
      * @param Article $article
+     * @param TagsSynchronizer $synchronizer
      * @return RedirectResponse
      */
-    public function update(StoreArticleRequest $request, Article $article): RedirectResponse
+    public function update(StoreArticleRequest $request, Article $article, TagsSynchronizer $synchronizer): RedirectResponse
     {
         $article->update($request->validated());
+        $synchronizer->sync($request->getTags(), $article);
 
         return redirect()->route('article.edit', ['article' => $article])->with('success', 'Статья успешно обновлена');
     }
