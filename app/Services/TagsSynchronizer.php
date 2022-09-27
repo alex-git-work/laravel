@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\Models\Interfaces\Synchronizer;
+use App\Models\Interfaces\TagsProvider;
 use App\Models\Tag;
 use Illuminate\Support\Collection;
 
@@ -14,10 +14,10 @@ class TagsSynchronizer
 {
     /**
      * @param Collection $tags
-     * @param Synchronizer $model
+     * @param TagsProvider $model
      * @return void
      */
-    public function sync(Collection $tags, Synchronizer $model): void
+    public function sync(Collection $tags, TagsProvider $model): void
     {
         /** @var Collection $currentTags */
         $currentTags = $model->tags->keyBy('name');

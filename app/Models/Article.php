@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Models\Interfaces\Synchronizer;
+use App\Models\Interfaces\TagsProvider;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -27,7 +27,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @method static Builder active
  * @method static Model create(array $attributes)
  */
-class Article extends Model implements Synchronizer
+class Article extends Model implements TagsProvider
 {
     use HasFactory;
 
