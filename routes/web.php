@@ -5,6 +5,7 @@ use App\Http\Controllers\MessageController;
 use App\Http\Controllers\TagsController;
 use App\Models\Article;
 use App\Models\Message;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,7 +20,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('index', ['articles' => Article::active()->with('tags')->get()]);
+    return view('index', ['articles' => Article::active()->with('tags')->latest()->get()]);
 })->name('index');
 
 Route::get('/about', fn () => view('about'))->name('about');
@@ -35,3 +36,5 @@ Route::get('/admin/feedback', function () {
 Route::resource('article', ArticleController::class)->except('index');
 
 Route::get('/tag/{tag}', [TagsController::class, 'index'])->name('tag.index');
+
+Auth::routes();
