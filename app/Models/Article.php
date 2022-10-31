@@ -2,6 +2,9 @@
 
 namespace App\Models;
 
+use App\Events\ArticleCreated;
+use App\Events\ArticleDestroyed;
+use App\Events\ArticleUpdated;
 use App\Models\Interfaces\TagsProvider;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
@@ -39,6 +42,12 @@ class Article extends Model implements TagsProvider
         'id',
         'created_at',
         'updated_at',
+    ];
+
+    protected $dispatchesEvents = [
+        'created' => ArticleCreated::class,
+        'updated' => ArticleUpdated::class,
+        'deleted' => ArticleDestroyed::class,
     ];
 
     /**
