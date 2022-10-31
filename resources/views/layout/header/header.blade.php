@@ -14,15 +14,40 @@
                         <line x1="21" y1="21" x2="15.8" y2="15.8"></line>
                     </svg>
                 </a>
-                <a class="btn btn-sm btn-outline-secondary" href="#">Sign up</a>
+                <!-- Authentication Links -->
+                @guest
+                    @if (Route::has('login'))
+                        <a class="btn btn-sm btn-outline-secondary" href="{{ route('login') }}">{{ __('Login') }}</a>
+                    @endif
+
+                    @if (Route::has('register'))
+                        <a class="btn btn-sm btn-outline-secondary ml-2" href="{{ route('register') }}">{{ __('Register') }}</a>
+                    @endif
+                @else
+                    <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        {{ Auth::user()->name }}
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">{{ __('Logout') }}</a>
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                            @csrf
+                        </form>
+                    </div>
+                @endguest
             </div>
         </div>
     </header>
 
-    @include('layout.header.scroller')
+    @section('scroller')
+        @include('layout.header.scroller')
+    @show
 
-    @include('layout.header.jumbotron')
+    @section('jumbotron')
+        @include('layout.header.jumbotron')
+    @show
 
-    @include('layout.header.row')
+    @section('row')
+        @include('layout.header.row')
+    @show
 
 </div>

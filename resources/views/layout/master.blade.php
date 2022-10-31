@@ -20,18 +20,17 @@
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 </head>
 
-<body>
+<body id="top" class="d-flex flex-column min-vh-100">
 
 @include('layout.header.header')
 
 <main role="main" class="container">
     <div class="row">
-        <div class="col-md-8 blog-main">
-            @yield('content')
-        </div><!-- /.blog-main -->
+        @yield('content')
 
-        @include('layout.sidebar')
-
+        @section('sidebar')
+            @include('layout.sidebar')
+        @show
     </div><!-- /.row -->
 
 </main><!-- /.container -->

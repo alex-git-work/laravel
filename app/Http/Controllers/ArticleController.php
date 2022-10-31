@@ -16,6 +16,17 @@ use Illuminate\Routing\Controller;
 class ArticleController extends Controller
 {
     /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth')->except('show');
+        $this->middleware('can:update,article')->only(['edit', 'update', 'destroy']);
+    }
+
+    /**
      * Show the form for creating a new resource.
      *
      * @return View
@@ -35,6 +46,7 @@ class ArticleController extends Controller
     public function store(StoreArticleRequest $request, TagsSynchronizer $synchronizer): RedirectResponse
     {
         $article = new Article($request->validated());
+        $article->author_id = auth()->id();
         $article->save();
         $synchronizer->sync($request->getTags(), $article);
 
