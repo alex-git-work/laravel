@@ -3,9 +3,8 @@
 namespace App\Listeners;
 
 use App\Events\ArticleUpdated;
-use App\Models\Admin;
-use App\Notifications\ArticleUpdated as ArticleUpdatedNotification;
-use Illuminate\Support\Facades\Notification;
+use App\Mail\ArticleUpdated as ArticleUpdatedMail;
+use Illuminate\Support\Facades\Mail;
 
 /**
  * Class SendArticleUpdatedAdminNotification
@@ -21,6 +20,6 @@ class SendArticleUpdatedAdminNotification
      */
     public function handle(ArticleUpdated $event): void
     {
-        Notification::send(new Admin(), new ArticleUpdatedNotification($event->article));
+        Mail::to(config('mail.admin.address'))->send(new ArticleUpdatedMail($event->article));
     }
 }

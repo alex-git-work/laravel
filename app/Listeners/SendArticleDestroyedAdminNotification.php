@@ -3,9 +3,8 @@
 namespace App\Listeners;
 
 use App\Events\ArticleDestroyed;
-use App\Models\Admin;
-use App\Notifications\ArticleDestroyed as ArticleDestroyedNotification;
-use Illuminate\Support\Facades\Notification;
+use App\Mail\ArticleDestroyed as ArticleDestroyedMail;
+use Illuminate\Support\Facades\Mail;
 
 /**
  * Class SendArticleDestroyedAdminNotification
@@ -21,6 +20,6 @@ class SendArticleDestroyedAdminNotification
      */
     public function handle(ArticleDestroyed $event): void
     {
-        Notification::send(new Admin(), new ArticleDestroyedNotification($event->article));
+        Mail::to(config('mail.admin.address'))->send(new ArticleDestroyedMail($event->article));
     }
 }
