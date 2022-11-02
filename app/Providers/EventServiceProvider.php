@@ -2,6 +2,12 @@
 
 namespace App\Providers;
 
+use App\Events\ArticleCreated;
+use App\Events\ArticleDestroyed;
+use App\Events\ArticleUpdated;
+use App\Listeners\SendArticleCreatedAdminNotification;
+use App\Listeners\SendArticleDestroyedAdminNotification;
+use App\Listeners\SendArticleUpdatedAdminNotification;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -16,6 +22,15 @@ class EventServiceProvider extends ServiceProvider
     protected $listen = [
         Registered::class => [
             SendEmailVerificationNotification::class,
+        ],
+        ArticleCreated::class => [
+            SendArticleCreatedAdminNotification::class,
+        ],
+        ArticleUpdated::class => [
+            SendArticleUpdatedAdminNotification::class,
+        ],
+        ArticleDestroyed::class => [
+            SendArticleDestroyedAdminNotification::class,
         ],
     ];
 
