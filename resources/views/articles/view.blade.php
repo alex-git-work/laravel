@@ -22,7 +22,15 @@ use App\Models\Article;
             <hr>
             <p>{{ $article->body }}</p>
             @include('layout.tags', ['article' => $article])
-            <a href="{{ route('index') }}"><- На главную</a>
+            <a class="float-left" href="{{ route('index') }}"><- На главную</a>
+            @admin
+            <a class="float-right text-success" href="{{ route('admin.article.edit', ['article' => $article]) }}">Редактировать -></a>
+            @endadmin
+            @unlessadmin
+                @can('update', $article)
+                    <a class="float-right text-success" href="{{ route('article.edit', ['article' => $article]) }}">Редактировать -></a>
+                @endcan
+            @endadmin
         </div>
     </div><!-- /.blog-main -->
 @endsection

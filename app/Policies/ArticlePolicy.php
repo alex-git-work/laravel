@@ -24,7 +24,7 @@ class ArticlePolicy
      */
     public function update(User $user, Article $article): Response|bool
     {
-        return $article->author_id === $user->id ? Response::allow() : Response::deny('Редактировать чужую статью нельзя');
+        return $article->author_id === $user->id || $user->isAdmin() ? Response::allow() : Response::deny('Редактировать чужую статью нельзя');
     }
 
     /**
@@ -36,7 +36,7 @@ class ArticlePolicy
      */
     public function delete(User $user, Article $article): Response|bool
     {
-        return $article->author_id === $user->id;
+        return $article->author_id === $user->id || $user->isAdmin();
     }
 
     /**
@@ -48,6 +48,22 @@ class ArticlePolicy
      */
     public function forceDelete(User $user, Article $article): Response|bool
     {
-        return $article->author_id === $user->id;
+        return $article->author_id === $user->id || $user->isAdmin();
+    }
+
+    /**
+     * @param User|null $user
+     * @param Article $article
+     * @return Response|bool
+     */
+    public function view(?User $user, Article $article): Response|bool
+    {
+        $result = true;
+
+        if ($article->isHidden()) {
+            $result = $article->author_id === optional($user)->id || optional($user)->isAdmin();
+        }
+
+        return $result;
     }
 }

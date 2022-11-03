@@ -24,6 +24,7 @@ class ArticleController extends Controller
     {
         $this->middleware('auth')->except('show');
         $this->middleware('can:update,article')->only(['edit', 'update', 'destroy']);
+        $this->middleware('can:view,article');
     }
 
     /**

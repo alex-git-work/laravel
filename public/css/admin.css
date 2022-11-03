@@ -1,0 +1,4 @@
+.padding-md td, th {
+    padding: 8px;
+    vertical-align: top;
+}
