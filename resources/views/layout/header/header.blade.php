@@ -28,6 +28,9 @@
                         {{ Auth::user()->name }}
                     </a>
                     <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                        @admin
+                            <a class="dropdown-item" href="{{ route('admin') }}" target="_blank">Админка</a>
+                        @endadmin
                         <a class="dropdown-item" href="{{ route('telescope') }}" target="_blank">Telescope</a>
                         <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">{{ __('Logout') }}</a>
                         <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">

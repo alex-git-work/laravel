@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\ArticleController as AdminArticleController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\TagsController;
@@ -19,6 +21,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Auth::routes();
+
 Route::get('/', function () {
     return view('index', ['articles' => Article::active()->with('tags')->latest()->get()]);
 })->name('index');
@@ -37,4 +41,11 @@ Route::resource('article', ArticleController::class)->except('index');
 
 Route::get('/tag/{tag}', [TagsController::class, 'index'])->name('tag.index');
 
-Auth::routes();
+Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function () {
+    Route::get('/', [AdminController::class, 'index'])->name('admin');
+
+    Route::name('admin.')->group(function () {
+        Route::patch('/article/{article}/toggle', [AdminArticleController::class, 'toggle'])->name('article.toggle');
+        Route::resource('article', AdminArticleController::class)->except('show');
+    });
+});

@@ -94,4 +94,20 @@ class Article extends Model implements TagsProvider
     {
         return $query->whereStatus(self::STATUS_PUBLISHED)->orderBy('created_at', $direction);
     }
+
+    /**
+     * @return bool
+     */
+    public function isHidden(): bool
+    {
+        return $this->status === self::STATUS_HIDDEN;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isNotHidden(): bool
+    {
+        return !$this->isHidden();
+    }
 }
