@@ -20,7 +20,7 @@ use App\Models\Article;
             <p class="blog-post-meta">{{ $article->created_at->translatedFormat('j F Y') }}</p>
             <p>{{ $article->preview }}</p>
             <hr>
-            <p>{{ $article->body }}</p>
+            <p>{!! nl2br($article->body) !!}</p>
             @include('layout.tags', ['article' => $article])
             <a class="float-left" href="{{ route('index') }}"><- На главную</a>
             @admin

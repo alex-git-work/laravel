@@ -117,7 +117,7 @@ class User extends Model implements Authenticatable
      */
     public function isAdmin(): bool
     {
-        return $this->role_id === 1;
+        return $this->role_id === Role::ADMIN;
     }
 
     /**

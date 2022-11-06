@@ -24,7 +24,7 @@ use Illuminate\Support\Facades\Route;
 Auth::routes();
 
 Route::get('/', function () {
-    return view('index', ['articles' => Article::active()->with('tags')->latest()->get()]);
+    return view('index', ['articles' => Article::active()->with('tags')->get()]);
 })->name('index');
 
 Route::get('/about', fn () => view('about'))->name('about');
