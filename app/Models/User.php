@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use App\Notifications\PasswordReset;
 use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Contracts\Auth\CanResetPassword;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -28,12 +30,13 @@ use Illuminate\Support\Facades\Hash;
  * @property Collection $articles
  * @property Role $role
  */
-class User extends Model implements Authenticatable
+class User extends Model implements Authenticatable, CanResetPassword
 {
     use HasFactory;
     use Notifiable;
 
     protected $fillable = [
+        'role_id',
         'name',
         'email',
         'password',
@@ -101,6 +104,22 @@ class User extends Model implements Authenticatable
     public function getRememberTokenName(): string
     {
         return 'remember_token';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getEmailForPasswordReset(): string
+    {
+        return $this->email;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new PasswordReset($token));
     }
 
     /**

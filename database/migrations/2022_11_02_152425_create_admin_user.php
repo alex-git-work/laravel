@@ -3,7 +3,6 @@
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -20,7 +19,7 @@ return new class extends Migration
                 'role_id' => Role::ADMIN,
                 'name' => env('ADMIN_NAME', 'admin'),
                 'email' => config('mail.admin.address'),
-                'password' => Hash::make(env('ADMIN_PASSWORD', 'admin')),
+                'password' => env('ADMIN_PASSWORD', 'admin'),
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s'),
             ]);

@@ -2,8 +2,10 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Article;
 use App\Models\User;
 use App\Notifications\NewArticlesByPeriod;
+use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
@@ -37,12 +39,12 @@ class NewArticlesMailingCommand extends Command
     {
         $data = [
             'start_date' => $this->argument('start_date'),
-            'end_date'   => $this->argument('end_date'),
+            'end_date' => $this->argument('end_date'),
         ];
 
         $rules = [
             'start_date' => 'required|date',
-            'end_date'   => 'required|date|after:start_date'
+            'end_date' => 'required|date|after:start_date'
         ];
 
         $validator = Validator::make($data, $rules);
@@ -55,11 +57,15 @@ class NewArticlesMailingCommand extends Command
             return SymfonyCommand::FAILURE;
         }
 
-        $user = User::all();
+        $start = new Carbon($data['start_date']);
+        $end = new Carbon($data['end_date']);
 
-        $user->each(function (User $u) use ($data) {
-            $u->notify(new NewArticlesByPeriod($data['start_date'], $data['end_date']));
-        });
+        $articles = Article::where('status', '=', Article::STATUS_PUBLISHED)->whereBetween('created_at', [
+            $start->startOfDay()->translatedFormat('Y-m-d H:i:s'),
+            $end->endOfDay()->translatedFormat('Y-m-d H:i:s')
+        ])->get();
+
+        User::all()->each(fn(User $u) => $u->notify(new NewArticlesByPeriod($start, $end, $articles)));
 
         $this->info('Команда выполнена успешно');
         return SymfonyCommand::SUCCESS;

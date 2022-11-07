@@ -29,23 +29,21 @@ class NewArticlesByPeriod extends Notification
     /**
      * Create a new notification instance.
      *
-     * @return void
+     * @param Carbon $start
+     * @param Carbon $end
+     * @param Collection $articles
      */
-    public function __construct(string $start, string $end)
+    public function __construct(Carbon $start, Carbon $end, Collection $articles)
     {
-        $this->start = new Carbon($start);
-        $this->end = new Carbon($end);
-
-        $this->articles = Article::all()->whereBetween('created_at', [
-            $this->start->startOfDay()->translatedFormat('Y-m-d H:i:s'),
-            $this->end->endOfDay()->translatedFormat('Y-m-d H:i:s')
-        ])->where('status', '=', Article::STATUS_PUBLISHED);
+        $this->start = $start;
+        $this->end = $end;
+        $this->articles = $articles;
     }
 
     /**
      * Get the notification's delivery channels.
      *
-     * @param  mixed  $notifiable
+     * @param mixed $notifiable
      * @return array
      */
     public function via(mixed $notifiable): array
@@ -56,7 +54,7 @@ class NewArticlesByPeriod extends Notification
     /**
      * Get the mail representation of the notification.
      *
-     * @param  mixed  $notifiable
+     * @param mixed $notifiable
      * @return MailMessage
      */
     public function toMail(mixed $notifiable): MailMessage
@@ -65,7 +63,7 @@ class NewArticlesByPeriod extends Notification
         $message = new MailMessage();
 
         $message->subject('Новостная рассылка от ' . config('app.name') . ' за период ' . $period);
-        $message->greeting('Привет, '. $notifiable->name . '!');
+        $message->greeting('Привет, ' . $notifiable->name . '!');
 
         if ($this->articles->isNotEmpty()) {
             $message->line('За прошедшую неделю были опубликованы следующие статьи:');
@@ -87,7 +85,7 @@ class NewArticlesByPeriod extends Notification
     /**
      * Get the array representation of the notification.
      *
-     * @param  mixed  $notifiable
+     * @param mixed $notifiable
      * @return array
      */
     public function toArray(mixed $notifiable): array

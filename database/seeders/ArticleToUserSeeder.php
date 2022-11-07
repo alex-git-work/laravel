@@ -6,10 +6,13 @@ use App\Models\Article;
 use App\Models\Role;
 use App\Models\Tag;
 use App\Models\User;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class ArticleToUserSeeder extends Seeder
 {
+    use WithoutModelEvents;
+
     /**
      * Run the database seeds.
      *
