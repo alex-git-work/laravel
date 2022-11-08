@@ -21,6 +21,16 @@ class Role extends Model
 {
     use HasFactory;
 
+    public const ADMIN = 1;
+    public const USER = 2;
+
+    public $timestamps = false;
+
+    protected $fillable = [
+        'name',
+        'description',
+    ];
+
     /**
      * @return HasMany
      */
