@@ -14,4 +14,5 @@ return [
 
     'default_lat' => '55.755864',
     'default_lon' => '37.61769',
+    'token' => env('OPENWEATHERMAP_KEY', 'key'),
 ];

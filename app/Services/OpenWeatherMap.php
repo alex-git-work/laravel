@@ -28,7 +28,7 @@ class OpenWeatherMap implements Weather
      *
      * @var string
      */
-    protected string $token = '6abd116ff94c24ddc88ce4949b40cef6';
+    protected string $token;
 
     /**
      * Geographical coordinates (latitude, longitude).
@@ -92,6 +92,7 @@ class OpenWeatherMap implements Weather
         // в дальнейшем можно будет подставлять значения для города, выбранного пользователем в ЛК
         $this->lat = config('openweather.default_lat');
         $this->lon = config('openweather.default_lon');
+        $this->token = config('openweather.token');
         $this->init();
     }
 
