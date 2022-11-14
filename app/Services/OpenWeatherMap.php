@@ -90,8 +90,8 @@ class OpenWeatherMap implements Weather
     public function __construct()
     {
         // в дальнейшем можно будет подставлять значения для города, выбранного пользователем в ЛК
-        $this->lat = config('openweather.default_lat');
-        $this->lon = config('openweather.default_lon');
+        $this->lat = config('openweather.defaults.lat');
+        $this->lon = config('openweather.defaults.lon');
         $this->token = config('openweather.token');
         $this->init();
     }

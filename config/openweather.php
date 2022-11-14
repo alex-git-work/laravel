@@ -12,7 +12,21 @@ return [
     |
     */
 
-    'default_lat' => '55.755864',
-    'default_lon' => '37.61769',
+    'defaults' => [
+        'lat' => '55.755864',
+        'lon' => '37.61769',
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | API key
+    |--------------------------------------------------------------------------
+    |
+    | Your unique API key.
+    | You can always find it on your account page under the "API key" tab.
+    | https://home.openweathermap.org/api_keys
+    |
+    */
+
     'token' => env('OPENWEATHERMAP_KEY', 'key'),
 ];
