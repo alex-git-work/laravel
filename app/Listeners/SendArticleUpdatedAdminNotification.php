@@ -4,6 +4,9 @@ namespace App\Listeners;
 
 use App\Events\ArticleUpdated;
 use App\Mail\ArticleUpdated as ArticleUpdatedMail;
+use App\Services\PushAll;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
 /**
@@ -21,5 +24,9 @@ class SendArticleUpdatedAdminNotification
     public function handle(ArticleUpdated $event): void
     {
         Mail::to(config('mail.admin.address'))->send(new ArticleUpdatedMail($event->article));
+
+        if (config('pushall.enabled')) {
+            Log::debug(App::make(PushAll::class)->sendRequest('Статья обновлена', $event->article->title));
+        }
     }
 }

@@ -4,6 +4,9 @@ namespace App\Listeners;
 
 use App\Events\ArticleDestroyed;
 use App\Mail\ArticleDestroyed as ArticleDestroyedMail;
+use App\Services\PushAll;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
 /**
@@ -21,5 +24,9 @@ class SendArticleDestroyedAdminNotification
     public function handle(ArticleDestroyed $event): void
     {
         Mail::to(config('mail.admin.address'))->send(new ArticleDestroyedMail($event->article));
+
+        if (config('pushall.enabled')) {
+            Log::debug(App::make(PushAll::class)->sendRequest('Статья удалена', $event->article->title));
+        }
     }
 }

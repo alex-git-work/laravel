@@ -117,7 +117,7 @@ class OpenWeatherMap implements Weather
      */
     public function getCurrentTemp(): int
     {
-        return $this->data['main']['temp'];
+        return round($this->data['main']['temp']);
     }
 
     /**
@@ -125,7 +125,7 @@ class OpenWeatherMap implements Weather
      */
     public function getFeelslikeTemp(): int
     {
-        return $this->data['main']['feels_like'];
+        return round($this->data['main']['feels_like']);
     }
 
     /**
@@ -133,7 +133,7 @@ class OpenWeatherMap implements Weather
      */
     public function getMaxTemp(): int
     {
-        return $this->data['main']['temp_max'];
+        return round($this->data['main']['temp_max']);
     }
 
     /**
@@ -141,7 +141,7 @@ class OpenWeatherMap implements Weather
      */
     public function getMinTemp(): int
     {
-        return $this->data['main']['temp_min'];
+        return round($this->data['main']['temp_min']);
     }
 
     /**
