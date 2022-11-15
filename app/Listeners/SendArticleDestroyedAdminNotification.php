@@ -26,7 +26,12 @@ class SendArticleDestroyedAdminNotification
         Mail::to(config('mail.admin.address'))->send(new ArticleDestroyedMail($event->article));
 
         if (config('pushall.enabled')) {
-            Log::debug(App::make(PushAll::class)->sendRequest('Статья удалена', $event->article->title));
+            $response = App::make(PushAll::class, [
+                'id' => config('pushall.id'),
+                'key' => config('pushall.key')
+            ])->sendRequest('Статья удалена', $event->article->title);
+
+            Log::debug($response);
         }
     }
 }

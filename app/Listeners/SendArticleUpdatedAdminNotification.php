@@ -26,7 +26,12 @@ class SendArticleUpdatedAdminNotification
         Mail::to(config('mail.admin.address'))->send(new ArticleUpdatedMail($event->article));
 
         if (config('pushall.enabled')) {
-            Log::debug(App::make(PushAll::class)->sendRequest('Статья обновлена', $event->article->title));
+            $response = App::make(PushAll::class, [
+                'id' => config('pushall.id'),
+                'key' => config('pushall.key')
+            ])->sendRequest('Статья обновлена', $event->article->title);
+
+            Log::debug($response);
         }
     }
 }

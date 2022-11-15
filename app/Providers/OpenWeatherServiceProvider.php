@@ -18,9 +18,7 @@ class OpenWeatherServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->singleton(OpenWeatherMap::class, function () {
-            return new OpenWeatherMap();
-        });
+        $this->app->singleton(OpenWeatherMap::class);
     }
 
     /**

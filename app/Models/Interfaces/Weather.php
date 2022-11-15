@@ -9,6 +9,13 @@ namespace App\Models\Interfaces;
 interface Weather
 {
     /**
+     * @param string $lat
+     * @param string $lon
+     * @param string $token
+     */
+    public function __construct(string $lat, string $lon, string $token);
+
+    /**
      * Api response comes with code 200 (or something like that).
      *
      * @return bool

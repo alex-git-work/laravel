@@ -17,10 +17,14 @@ class PushAll
     protected string $key;
     protected Client $client;
 
-    public function __construct()
+    /**
+     * @param string $id
+     * @param string $key
+     */
+    public function __construct(string $id, string $key)
     {
-        $this->id = config('pushall.id');
-        $this->key = config('pushall.key');
+        $this->id = $id;
+        $this->key = $key;
         $this->client = new Client();
     }
 

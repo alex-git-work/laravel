@@ -6,7 +6,6 @@ use App\Models\Tag;
 use App\Services\OpenWeatherMap;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\View\View;
-use Request;
 
 class ViewServiceProvider extends ServiceProvider
 {
@@ -19,8 +18,27 @@ class ViewServiceProvider extends ServiceProvider
     {
         view()->composer('layout.sidebar', fn (View $view) => $view->with(['cloud' => Tag::cloud()]));
 
-        if (Request::getRequestUri() === RouteServiceProvider::HOME) {
-            view()->composer('layout.sidebar', fn (View $view) => $view->with(['forecast' => $this->app->get(OpenWeatherMap::class)]));
-        }
+        view()->composer('layout.weather', function (View $view) {
+            /** @var OpenWeatherMap $forecast */
+            $forecast = $this->app->make(OpenWeatherMap::class, [
+                'lat' => config('openweather.defaults.lat'),
+                'lon' => config('openweather.defaults.lon'),
+                'token' => config('openweather.token'),
+            ]);
+
+            $forecast->init();
+
+            return $view->with([
+                'showWeather' => $forecast->responseSuccess(),
+                'cityName' => $forecast->getCityName(),
+                'currentTemp' => $forecast->getCurrentTemp(),
+                'feelslikeTemp' => $forecast->getFeelslikeTemp(),
+                'maxTemp' => $forecast->getMaxTemp(),
+                'minTemp' => $forecast->getMinTemp(),
+                'weatherDescription' => $forecast->getWeatherDescription(),
+                'iconExist' => $forecast->iconExist(),
+                'iconUrl' => $forecast->getIconUrl(),
+            ]);
+        });
     }
 }

@@ -84,16 +84,13 @@ class OpenWeatherMap implements Weather
     protected const CACHE_KEY_FORECAST = 'forecast';
 
     /**
-     * @throws GuzzleException
-     * @throws JsonException
+     * {@inheritdoc}
      */
-    public function __construct()
+    public function __construct(string $lat, string $lon, string $token)
     {
-        // в дальнейшем можно будет подставлять значения для города, выбранного пользователем в ЛК
-        $this->lat = config('openweather.defaults.lat');
-        $this->lon = config('openweather.defaults.lon');
-        $this->token = config('openweather.token');
-        $this->init();
+        $this->lat = $lat;
+        $this->lon = $lon;
+        $this->token = $token;
     }
 
     /**
@@ -173,7 +170,7 @@ class OpenWeatherMap implements Weather
      * @throws GuzzleException
      * @throws JsonException
      */
-    protected function init(): void
+    public function init(): void
     {
         $this->sendRequest();
         $this->setData();

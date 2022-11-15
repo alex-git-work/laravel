@@ -18,7 +18,7 @@ class PushAllServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->singleton(PushAll::class, fn () => new PushAll());
+        $this->app->singleton(PushAll::class);
     }
 
     /**
