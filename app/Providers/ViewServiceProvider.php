@@ -20,11 +20,7 @@ class ViewServiceProvider extends ServiceProvider
 
         view()->composer('layout.weather', function (View $view) {
             /** @var OpenWeatherMap $forecast */
-            $forecast = $this->app->make(OpenWeatherMap::class, [
-                'lat' => config('openweather.defaults.lat'),
-                'lon' => config('openweather.defaults.lon'),
-                'token' => config('openweather.token'),
-            ]);
+            $forecast = $this->app->make(OpenWeatherMap::class);
 
             $forecast->init();
 

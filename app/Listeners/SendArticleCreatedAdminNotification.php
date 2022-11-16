@@ -26,10 +26,7 @@ class SendArticleCreatedAdminNotification
         Mail::to(config('mail.admin.address'))->send(new ArticleCreatedMail($event->article));
 
         if (config('pushall.enabled')) {
-            $response = App::make(PushAll::class, [
-                'id' => config('pushall.id'),
-                'key' => config('pushall.key')
-            ])->sendRequest('Создана новая статья', $event->article->title . ' by ' . $event->article->user->name);
+            $response = App::make(PushAll::class)->sendRequest('Создана новая статья', $event->article->title . ' by ' . $event->article->user->name);
 
             Log::debug($response);
         }

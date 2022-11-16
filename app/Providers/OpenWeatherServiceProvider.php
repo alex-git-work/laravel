@@ -18,7 +18,13 @@ class OpenWeatherServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->singleton(OpenWeatherMap::class);
+        $this->app->singleton(OpenWeatherMap::class, function () {
+            return new OpenWeatherMap(
+                config('openweather.defaults.lat'),
+                config('openweather.defaults.lon'),
+                config('openweather.token')
+            );
+        });
     }
 
     /**
