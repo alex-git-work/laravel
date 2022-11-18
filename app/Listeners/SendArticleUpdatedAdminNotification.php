@@ -5,7 +5,7 @@ namespace App\Listeners;
 use App\Events\ArticleUpdated;
 use App\Mail\ArticleUpdated as ArticleUpdatedMail;
 use App\Services\PushAll;
-use Illuminate\Support\Facades\App;
+use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
@@ -15,18 +15,29 @@ use Illuminate\Support\Facades\Mail;
  */
 class SendArticleUpdatedAdminNotification
 {
+    protected PushAll $notifier;
+
+    /**
+     * @param PushAll $notifier
+     */
+    public function __construct(PushAll $notifier)
+    {
+        $this->notifier = $notifier;
+    }
+
     /**
      * Handle the event.
      *
      * @param ArticleUpdated $event
      * @return void
+     * @throws GuzzleException
      */
     public function handle(ArticleUpdated $event): void
     {
         Mail::to(config('mail.admin.address'))->send(new ArticleUpdatedMail($event->article));
 
         if (config('pushall.enabled')) {
-            $response = App::make(PushAll::class)->sendRequest('Статья обновлена', $event->article->title);
+            $response = $this->notifier->sendRequest('Статья обновлена', $event->article->title);
 
             Log::debug($response);
         }
