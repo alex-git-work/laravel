@@ -29,6 +29,7 @@ use Illuminate\Support\Facades\Hash;
  * Relations
  * @property Collection $articles
  * @property Role $role
+ * @property Comment $comments
  */
 class User extends Model implements Authenticatable, CanResetPassword
 {
@@ -56,6 +57,14 @@ class User extends Model implements Authenticatable, CanResetPassword
     public function role(): HasOne
     {
         return $this->hasOne(Role::class, 'id', 'role_id');
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function comments(): HasMany
+    {
+        return $this->hasMany(Comment::class, 'author_id');
     }
 
     /**

@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\ArticleController as AdminArticleController;
 use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\TagsController;
 use App\Models\Article;
@@ -40,6 +41,8 @@ Route::get('/admin/feedback', function () {
 Route::resource('article', ArticleController::class)->except('index');
 
 Route::get('/tag/{tag}', [TagsController::class, 'index'])->name('tag.index');
+
+Route::post('/comment', [CommentController::class, 'store'])->name('comment.store');
 
 Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function () {
     Route::get('/', [AdminController::class, 'index'])->name('admin');

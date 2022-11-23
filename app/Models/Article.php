@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * This is the model class for table "articles".
@@ -30,6 +31,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * Relations
  * @property User $user
  * @property Collection $tags
+ * @property Collection $comments
  *
  * @method static Builder active
  * @method static Model create(array $attributes)
@@ -83,6 +85,14 @@ class Article extends Model implements TagsProvider
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'author_id');
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function comments(): HasMany
+    {
+        return $this->hasMany(Comment::class)->orderBy('created_at', 'desc');
     }
 
     /**

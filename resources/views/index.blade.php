@@ -27,6 +27,10 @@ use App\Models\Article;
                     <p>{{ $article->preview }}</p>
                     @include('layout.tags', ['article' => $article])
                     <a class="float-left" href="{{ route('article.show', ['article' => $article]) }}">Читать далее</a>
+                    @if($article->comments->isNotEmpty())
+                        <span class="float-left">&nbsp;|&nbsp;</span>
+                        <a class="float-left text-muted" href="{{ route('article.show', ['article' => $article]) . '#comments' }}">Комментарии</a>
+                    @endif
                     @can('update', $article)
                         <a class="float-right text-success" href="{{ route('article.edit', ['article' => $article]) }}">Редактировать</a>
                     @endcan
