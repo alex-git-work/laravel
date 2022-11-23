@@ -2,11 +2,9 @@
 
 namespace App\Providers;
 
-use App\Models\Tag;
 use Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\View\View;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -20,8 +18,6 @@ class AppServiceProvider extends ServiceProvider
         if ($this->app->isLocal()) {
             $this->app->register(IdeHelperServiceProvider::class);
         }
-
-        view()->composer('layout.sidebar', fn (View $view) => $view->with('cloud', Tag::cloud()));
 
         Blade::if('admin', fn () => optional(auth()->user())->isAdmin());
     }

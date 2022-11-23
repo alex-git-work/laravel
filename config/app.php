@@ -194,8 +194,10 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        App\Providers\ViewServiceProvider::class,
         App\Providers\TelescopeServiceProvider::class,
-
+        App\Providers\OpenWeatherServiceProvider::class,
+        App\Providers\PushAllServiceProvider::class,
     ],
 
     /*
@@ -211,6 +213,6 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
         // 'ExampleClass' => App\Example\ExampleClass::class,
+        'OpenWeather' => App\Facades\OpenWeather::class,
     ])->toArray(),
-
 ];

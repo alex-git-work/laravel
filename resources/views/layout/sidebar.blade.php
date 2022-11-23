@@ -25,11 +25,15 @@ use Illuminate\Database\Eloquent\Collection;
             </div>
 
             <div class="p-3">
-                <h4 class="font-italic">Elsewhere</h4>
-                <ol class="list-unstyled">
-                    <li><a href="#">GitHub</a></li>
-                    <li><a href="#">Twitter</a></li>
-                    <li><a href="#">Facebook</a></li>
-                </ol>
+                @if(request()->routeIs('index'))
+                    @include('layout.weather')
+                @else
+                    <h4 class="font-italic">Elsewhere</h4>
+                    <ol class="list-unstyled">
+                        <li><a href="#">GitHub</a></li>
+                        <li><a href="#">Twitter</a></li>
+                        <li><a href="#">Facebook</a></li>
+                    </ol>
+                @endif
             </div>
         </aside><!-- /.blog-sidebar -->
