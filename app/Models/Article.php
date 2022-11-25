@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Arr;
 
 /**
  * This is the model class for table "articles".
@@ -32,6 +33,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property User $user
  * @property Collection $tags
  * @property Collection $comments
+ * @property Collection $history
  *
  * @method static Builder active
  * @method static Model create(array $attributes)
@@ -72,6 +74,25 @@ class Article extends Model implements TagsProvider
     }
 
     /**
+     * {@inheritdoc}
+     */
+    protected static function boot()
+    {
+        self::updating(function (self $article) {
+            $current = $article->getDirty();
+
+            $article->history()->create([
+                'article_id' => $article->id,
+                'author_id' => auth()->id(),
+                'old' => Arr::only($article->fresh()->toArray(), array_keys($current)),
+                'current' => $current,
+            ]);
+        });
+
+        parent::boot();
+    }
+
+    /**
      * @return BelongsToMany
      */
     public function tags(): BelongsToMany
@@ -93,6 +114,14 @@ class Article extends Model implements TagsProvider
     public function comments(): HasMany
     {
         return $this->hasMany(Comment::class)->orderBy('created_at', 'desc');
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function history(): HasMany
+    {
+        return $this->hasMany(ArticleHistory::class)->orderBy('created_at', 'desc');
     }
 
     /**

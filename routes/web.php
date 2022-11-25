@@ -48,6 +48,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function 
     Route::get('/', [AdminController::class, 'index'])->name('admin');
 
     Route::name('admin.')->group(function () {
+        Route::get('/article/history/{article}', [AdminArticleController::class, 'history'])->name('article.history');
         Route::patch('/article/{article}/toggle', [AdminArticleController::class, 'toggle'])->name('article.toggle');
         Route::resource('article', AdminArticleController::class)->except('show');
     });

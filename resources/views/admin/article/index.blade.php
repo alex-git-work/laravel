@@ -53,8 +53,13 @@ use App\Models\Article;
                                             @csrf
                                             @method('PATCH')
                                             <input name="status" type="hidden" value="<?= Article::STATUS_HIDDEN ?>">
-                                            <button onclick="return confirm('Вы уверены?');" class="btn btn-outline-dark btn-xs float-right" type="submit" name="toggle">Скрыть</button>
+                                            <button onclick="return confirm('Вы уверены?');" class="btn btn-outline-dark btn-xs" type="submit" name="toggle">Скрыть</button>
                                         </form>
+                                    </td>
+                                    <td>
+                                        @if($article->history->isNotEmpty())
+                                            <a class="btn btn-outline-info btn-xs" href="{{ route('admin.article.history', ['article' => $article]) }}">История</a>
+                                        @endif
                                     </td>
                                 </tr>
                             @endforeach

@@ -35,8 +35,7 @@ class ArticleToUserSeeder extends Seeder
             Comment::factory(rand(5, 15))->create(['author_id' => $u->id]);
         });
         Comment::all()->each(function (Comment $c) {
-            $c->article_id = Article::inRandomOrder()->first()->getAttribute('id');
-            $c->save();
+            $c->article()->associate(Article::inRandomOrder()->first())->save();
         });
     }
 }

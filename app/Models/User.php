@@ -30,6 +30,7 @@ use Illuminate\Support\Facades\Hash;
  * @property Collection $articles
  * @property Role $role
  * @property Comment $comments
+ * @property Collection $history
  */
 class User extends Model implements Authenticatable, CanResetPassword
 {
@@ -65,6 +66,14 @@ class User extends Model implements Authenticatable, CanResetPassword
     public function comments(): HasMany
     {
         return $this->hasMany(Comment::class, 'author_id');
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function history(): HasMany
+    {
+        return $this->hasMany(ArticleHistory::class, 'author_id')->orderBy('created_at', 'desc');
     }
 
     /**
