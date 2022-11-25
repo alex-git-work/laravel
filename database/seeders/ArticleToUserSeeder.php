@@ -31,8 +31,12 @@ class ArticleToUserSeeder extends Seeder
                         ->pluck('id')
                         ->toArray()
                 );
-                Comment::factory(rand(3, 10))->create(['author_id' => $u->id, 'article_id' => $a->id]);
             });
+            Comment::factory(rand(5, 15))->create(['author_id' => $u->id]);
+        });
+        Comment::all()->each(function (Comment $c) {
+            $c->article_id = Article::inRandomOrder()->first()->getAttribute('id');
+            $c->save();
         });
     }
 }

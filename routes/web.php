@@ -42,7 +42,7 @@ Route::resource('article', ArticleController::class)->except('index');
 
 Route::get('/tag/{tag}', [TagsController::class, 'index'])->name('tag.index');
 
-Route::post('/comment', [CommentController::class, 'store'])->name('comment.store');
+Route::post('/comment/{article}', [CommentController::class, 'store'])->name('comment.store');
 
 Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function () {
     Route::get('/', [AdminController::class, 'index'])->name('admin');
