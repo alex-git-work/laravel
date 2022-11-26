@@ -3,9 +3,11 @@
 /**
  * @var string $title
  * @var Article $article
+ * @var Comment $comment
  */
 
 use App\Models\Article;
+use App\Models\Comment;
 
 @endphp
 
@@ -22,15 +24,50 @@ use App\Models\Article;
             <hr>
             <p>{!! nl2br($article->body) !!}</p>
             @include('layout.tags', ['article' => $article])
-            <a class="float-left" href="{{ route('index') }}"><- На главную</a>
-            @admin
-            <a class="float-right text-success" href="{{ route('admin.article.edit', ['article' => $article]) }}">Редактировать -></a>
-            @endadmin
-            @unlessadmin
-                @can('update', $article)
-                    <a class="float-right text-success" href="{{ route('article.edit', ['article' => $article]) }}">Редактировать -></a>
-                @endcan
-            @endadmin
+            @include('layout.article-links', ['article' => $article])
+            @guest
+                <div class="card">
+                    <h5 class="card-header">Написать комментарий</h5>
+                    <div class="card-body">
+                        <p class="card-text">Только зарегистрированные пользователи могут оставлять комментарии</p>
+                        @if (Route::has('login'))
+                            <a class="btn btn-outline-primary" href="{{ route('login') }}">Войти</a>
+                        @endif
+                    </div>
+                </div>
+            @else
+                @include('layout.flash-success')
+                <form action="{{ route('comment.store', ['article' => $article]) }}" method="post">
+                    @csrf
+                    <div class="card">
+                        <h5 class="card-header">Написать комментарий</h5>
+                        <div class="card-body">
+                            <label class="control-label text-muted" for="body">поле обязательно для заполнения</label>
+                            <p><textarea id="body" name="body" class="form-control form-control-md mb-4 @error('body') is-invalid @enderror" rows="5"></textarea></p>
+                            @error('body')
+                            <div class="alert alert-danger mt-2" role="alert">{{ $message }}</div>
+                            @enderror
+                            <button class="btn btn-success" type="submit">Сохранить</button>
+                        </div>
+                    </div>
+                </form>
+            @endguest
+            @if($article->comments->isNotEmpty())
+                <h3 class="blog-post-title mb-4 mt-5" id="comments">Комментарии</h3>
+                @foreach($article->comments as $comment)
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h5 class="card-title float-left">{{ $comment->user->name }}</h5>
+                            <span class="text-muted float-right">{{ $comment->created_at->translatedFormat('j F Y') }}</span>
+                            <div class="clearfix"></div>
+                            <hr>
+                            <p>{{ $comment->body }}</p>
+                        </div>
+                    </div>
+                @endforeach
+                @include('layout.article-links', ['article' => $article])
+                <br>
+            @endif
         </div>
     </div><!-- /.blog-main -->
 @endsection

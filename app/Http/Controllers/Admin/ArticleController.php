@@ -98,6 +98,17 @@ class ArticleController extends Controller
     }
 
     /**
+     * @param Article $article
+     * @return View
+     */
+    public function history(Article $article): View
+    {
+        return view('admin.article.history', [
+            'article' => $article,
+        ]);
+    }
+
+    /**
      * Update article status.
      *
      * @param Article $article

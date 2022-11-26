@@ -104,6 +104,7 @@ class ArticleController extends Controller
      */
     public function destroy(Article $article): RedirectResponse
     {
+        $article->history()->delete();
         $article->delete();
 
         return redirect()->route('index')->with('success', 'Статья успешно удалена');

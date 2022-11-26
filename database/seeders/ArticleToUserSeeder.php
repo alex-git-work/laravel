@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Article;
+use App\Models\Comment;
 use App\Models\Role;
 use App\Models\Tag;
 use App\Models\User;
@@ -23,7 +24,7 @@ class ArticleToUserSeeder extends Seeder
         Tag::factory(12)->create();
 
         User::all()->where('role_id', '!=', Role::ADMIN)->each(function (User $u) {
-            Article::factory(rand(5, 10))->create(['author_id' => $u->id])->each(function (Article $a) {
+            Article::factory(rand(5, 10))->create(['author_id' => $u->id])->each(function (Article $a) use ($u) {
                 $a->tags()->attach(
                     Tag::all()
                         ->random(rand(4, 8))
@@ -31,6 +32,10 @@ class ArticleToUserSeeder extends Seeder
                         ->toArray()
                 );
             });
+            Comment::factory(rand(5, 15))->create(['author_id' => $u->id]);
+        });
+        Comment::all()->each(function (Comment $c) {
+            $c->article()->associate(Article::inRandomOrder()->first())->save();
         });
     }
 }
