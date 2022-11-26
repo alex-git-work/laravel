@@ -24,7 +24,7 @@ class ArticleToUserSeeder extends Seeder
         Tag::factory(12)->create();
 
         User::all()->where('role_id', '!=', Role::ADMIN)->each(function (User $u) {
-            Article::factory(rand(5, 10))->create(['author_id' => $u->id])->each(function (Article $a) use ($u) {
+            Article::factory(rand(5, 10))->create(['author_id' => $u->id])->each(function (Article $a) {
                 $a->tags()->attach(
                     Tag::all()
                         ->random(rand(4, 8))
@@ -32,10 +32,15 @@ class ArticleToUserSeeder extends Seeder
                         ->toArray()
                 );
             });
-            Comment::factory(rand(5, 15))->create(['author_id' => $u->id]);
         });
-        Comment::all()->each(function (Comment $c) {
-            $c->article()->associate(Article::inRandomOrder()->first())->save();
+
+        Article::all()->each(function (Article $a) {
+            User::all()->each(function (User $u) use ($a) {
+                Comment::factory(rand(0, 1))->create([
+                    'article_id' => $a->id,
+                    'author_id' => $u->id,
+                ]);
+            });
         });
     }
 }
