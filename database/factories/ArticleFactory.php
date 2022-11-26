@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Article;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -26,7 +27,7 @@ class ArticleFactory extends Factory
         }
 
         return [
-            'author_id' => 1,
+            'author_id' => User::factory(),
             'status' => Article::STATUS_PUBLISHED,
             'title' => $title,
             'preview' => fake()->paragraph(rand(1, 3), false),

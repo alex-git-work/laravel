@@ -2,7 +2,9 @@
 
 namespace Database\Factories;
 
+use App\Models\Article;
 use App\Models\Comment;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -18,8 +20,8 @@ class CommentFactory extends Factory
     public function definition(): array
     {
         return [
-            'article_id' => 1,
-            'author_id' => 1,
+            'article_id' => Article::factory(),
+            'author_id' => User::factory(),
             'body' => fake()->paragraph(rand(2, 3), false),
         ];
     }
