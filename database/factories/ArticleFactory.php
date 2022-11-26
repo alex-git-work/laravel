@@ -33,6 +33,7 @@ class ArticleFactory extends Factory
             'preview' => fake()->paragraph(rand(1, 3), false),
             'body' => $body,
             'slug' => Str::slug($title),
+            'created_at' => fake()->dateTimeThisYear(),
         ];
     }
 }

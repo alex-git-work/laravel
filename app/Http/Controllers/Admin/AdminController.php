@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Article;
+use App\Models\News;
 use Illuminate\Contracts\View\View;
 use Illuminate\Routing\Controller;
 
@@ -19,6 +20,7 @@ class AdminController extends Controller
     {
         return view('admin.index', [
             'articles' => Article::all(),
+            'news' => News::all(),
         ]);
     }
 }

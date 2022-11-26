@@ -2,9 +2,11 @@
 
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\ArticleController as AdminArticleController;
+use App\Http\Controllers\Admin\NewsController as AdminNewsController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\MessageController;
+use App\Http\Controllers\NewsController;
 use App\Http\Controllers\TagsController;
 use App\Models\Article;
 use App\Models\Message;
@@ -28,7 +30,7 @@ Route::get('/', function () {
     return view('index', ['articles' => Article::active()->with('tags')->get()]);
 })->name('index');
 
-Route::get('/about', fn () => view('about'))->name('about');
+Route::resource('news', NewsController::class)->only(['index', 'show']);
 
 Route::get('/contacts', [MessageController::class, 'create'])->name('contacts.create');
 
@@ -51,5 +53,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function 
         Route::get('/article/history/{article}', [AdminArticleController::class, 'history'])->name('article.history');
         Route::patch('/article/{article}/toggle', [AdminArticleController::class, 'toggle'])->name('article.toggle');
         Route::resource('article', AdminArticleController::class)->except('show');
+
+        Route::resource('news', AdminNewsController::class)->except('show');
     });
 });

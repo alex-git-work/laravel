@@ -16,4 +16,9 @@ return [
         'title' => 'Создать статью',
         'icon' => 'fa fa-plus-circle',
     ],
+    [
+        'route' => 'admin.news.index',
+        'title' => 'Новости',
+        'icon' => 'fas fa-bars',
+    ],
 ];
