@@ -22,12 +22,12 @@ use App\Models\News;
             <div class="row">
                 <div class="col-12">
                     @if($news->isNotEmpty())
-                        <table class="padding-md">
+                        <table class="padding-md mb-4">
                             <thead class="thead-dark">
                             <tr>
                                 <th></th>
                                 <th><p><b>Название</b></p></th>
-                                <th><p><b>Создана</b></p></th>
+                                <th><p><b>Дата создания</b></p></th>
                                 <th></th>
                             </tr>
                             </thead>
@@ -54,6 +54,7 @@ use App\Models\News;
                             @endforeach
                             </tbody>
                         </table>
+                        {{ $news->onEachSide(config('pagination.admin_section.each_side'))->links() }}
                     @else
                         <p>Новостей пока нет</p>
                     @endif

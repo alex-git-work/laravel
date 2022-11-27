@@ -7,9 +7,22 @@ return [
         'icon' => 'fa fa-home',
     ],
     [
-        'route' => 'admin.article.index',
+        'route' => '#',
         'title' => 'Статьи',
         'icon' => 'fa fa-file',
+        'submenu' => [
+            [
+                'route' => 'admin.article.index',
+                'title' => 'Активные',
+                'icon' => 'far fa-circle',
+            ],
+            [
+                'route' => 'admin.article.hidden',
+                'title' => 'Скрытые',
+                'icon' => 'far fa-circle',
+            ],
+        ],
+        'is_open' => false,
     ],
     [
         'route' => 'admin.article.create',

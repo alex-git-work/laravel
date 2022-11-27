@@ -13,7 +13,7 @@ use App\Models\Article;
 
 @extends('admin.layouts.master')
 
-@section('title', $title = 'Опубликованные статьи')
+@section('title', $title = 'Не опубликованные статьи')
 
 @section('content')
     <div class="card w-100">

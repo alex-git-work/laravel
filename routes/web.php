@@ -27,7 +27,9 @@ use Illuminate\Support\Facades\Route;
 Auth::routes();
 
 Route::get('/', function () {
-    return view('index', ['articles' => Article::active()->with('tags')->get()]);
+    return view('index', [
+        'articles' => Article::active()->with('tags')->simplePaginate(config('pagination.public_section.articles'))
+    ]);
 })->name('index');
 
 Route::resource('news', NewsController::class)->only(['index', 'show']);
@@ -51,6 +53,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function 
 
     Route::name('admin.')->group(function () {
         Route::get('/article/history/{article}', [AdminArticleController::class, 'history'])->name('article.history');
+        Route::get('/article/hidden', [AdminArticleController::class, 'hidden'])->name('article.hidden');
         Route::patch('/article/{article}/toggle', [AdminArticleController::class, 'toggle'])->name('article.toggle');
         Route::resource('article', AdminArticleController::class)->except('show');
 

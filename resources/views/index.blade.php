@@ -2,12 +2,12 @@
 
 /**
  * @var string $title
- * @var Collection $articles
+ * @var Paginator $articles
  * @var Article $article
  */
 
-use Illuminate\Database\Eloquent\Collection;
 use App\Models\Article;
+use Illuminate\Pagination\Paginator;
 
 @endphp
 
@@ -41,9 +41,6 @@ use App\Models\Article;
             <p>Статей пока нет, но они скоро появятся.</p>
         @endif
 
-        <nav class="blog-pagination">
-            <a class="btn btn-outline-primary" href="#">Older</a>
-            <a class="btn btn-outline-secondary disabled" href="#">Newer</a>
-        </nav>
+        {{ $articles->links() }}
     </div><!-- /.blog-main -->
 @endsection

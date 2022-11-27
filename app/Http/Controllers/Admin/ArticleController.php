@@ -24,7 +24,21 @@ class ArticleController extends Controller
     public function index(): View
     {
         return view('admin.article.index', [
-            'articles' => Article::all(),
+            'articles' => Article::where('status', Article::STATUS_PUBLISHED)->paginate(config('pagination.admin_section.articles')),
+            'is_active' => true,
+        ]);
+    }
+
+    /**
+     * Display a listing of the resource hidden part.
+     *
+     * @return View
+     */
+    public function hidden(): View
+    {
+        return view('admin.article.hidden', [
+            'articles' => Article::where('status', Article::STATUS_HIDDEN)->paginate(config('pagination.admin_section.articles')),
+            'is_active' => false,
         ]);
     }
 

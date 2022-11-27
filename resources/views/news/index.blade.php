@@ -2,11 +2,11 @@
 
 /**
  * @var string $title
- * @var Collection $news
+ * @var Paginator $news
  * @var News $item
  */
 
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Str;
 use App\Models\News;
 
@@ -44,5 +44,7 @@ use App\Models\News;
         @empty
             <p>Новостей пока нет</p>
         @endforelse
+
+        {{ $news->links() }}
     </div>
 @endsection

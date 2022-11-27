@@ -22,7 +22,7 @@ class NewsController extends Controller
     public function index(): View
     {
         return view('admin.news.index', [
-            'news' => News::all(),
+            'news' => News::paginate(config('pagination.admin_section.news')),
         ]);
     }
 
