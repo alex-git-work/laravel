@@ -20,6 +20,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * Relations
  * @property User $user
  * @property Article $article
+ *
+ * @mixin IdeHelperArticleHistory
  */
 class ArticleHistory extends Model
 {

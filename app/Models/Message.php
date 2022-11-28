@@ -16,12 +16,15 @@ use Illuminate\Support\Str;
  * @property Carbon $created_at
  * @property Carbon $updated_at
  *
- * @method static Model create(array $attributes)
+ * @mixin IdeHelperMessage
  */
 class Message extends Model
 {
     use HasFactory;
 
+    /**
+     * {@inheritdoc}
+     */
     protected $fillable = [
         'email',
         'body',

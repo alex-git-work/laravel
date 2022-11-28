@@ -17,7 +17,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property Carbon $updated_at
  * @property Carbon $deleted_at
  *
- * @method static Model create(array $attributes)
+ * @mixin IdeHelperNews
  */
 class News extends Model
 {

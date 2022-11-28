@@ -22,6 +22,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * Relations
  * @property User $user
  * @property Article $article
+ *
+ * @mixin IdeHelperComment
  */
 class Comment extends Model
 {

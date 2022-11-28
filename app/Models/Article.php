@@ -35,19 +35,24 @@ use Illuminate\Support\Arr;
  * @property Collection $comments
  * @property Collection $history
  *
- * @method static Builder active
- * @method static Model create(array $attributes)
+ * @mixin IdeHelperArticle
  */
 class Article extends Model implements TagsProvider
 {
     use HasFactory;
 
+    /**
+     * {@inheritdoc}
+     */
     protected $guarded = [
         'id',
         'created_at',
         'updated_at',
     ];
 
+    /**
+     * {@inheritdoc}
+     */
     protected $dispatchesEvents = [
         'created' => ArticleCreated::class,
         'updated' => ArticleUpdated::class,
