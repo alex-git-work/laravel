@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Article;
 use App\Models\Tag;
 use Illuminate\Contracts\View\View;
 use Illuminate\Routing\Controller;
@@ -18,7 +19,10 @@ class TagsController extends Controller
      */
     public function index(Tag $tag): View
     {
-        $articles = $tag->articles()->with('tags')->get();
+        $articles = $tag->articles()
+            ->where('status', Article::STATUS_PUBLISHED)
+            ->with('tags')
+            ->simplePaginate(config('pagination.public_section.articles'));
 
         return view('index', [
             'articles' => $articles,
