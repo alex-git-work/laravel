@@ -31,12 +31,17 @@ use Illuminate\Support\Facades\Hash;
  * @property Role $role
  * @property Comment $comments
  * @property Collection $history
+ *
+ * @mixin IdeHelperUser
  */
 class User extends Model implements Authenticatable, CanResetPassword
 {
     use HasFactory;
     use Notifiable;
 
+    /**
+     * {@inheritdoc}
+     */
     protected $fillable = [
         'role_id',
         'name',

@@ -16,6 +16,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  *
  * Relations
  * @property Collection $users
+ *
+ * @mixin IdeHelperRole
  */
 class Role extends Model
 {
@@ -24,8 +26,14 @@ class Role extends Model
     public const ADMIN = 1;
     public const USER = 2;
 
+    /**
+     * {@inheritdoc}
+     */
     public $timestamps = false;
 
+    /**
+     * {@inheritdoc}
+     */
     protected $fillable = [
         'name',
         'description',

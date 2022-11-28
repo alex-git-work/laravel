@@ -15,13 +15,17 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property string $name
  * @property Carbon $created_at
  * @property Carbon $updated_at
- *
  * @property Collection $articles
+ *
+ * @mixin IdeHelperTag
  */
 class Tag extends Model
 {
     use HasFactory;
 
+    /**
+     * {@inheritdoc}
+     */
     protected $fillable = [
         'name',
     ];
