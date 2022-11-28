@@ -2,6 +2,7 @@
 
 /**
  * @var Collection $articles
+ * @var Collection $news
  */
 
 use Illuminate\Database\Eloquent\Collection;
@@ -18,7 +19,8 @@ use App\Models\Article;
         <div class="card">
             <div class="card-body">
                 <h4 class="mb-4">{{ ucfirst(strtolower(auth()->user()->name)) }}, добро пожаловать.</h4>
-                <ul class="list-group">
+                <h5 class="mb-3">Статьи</h5>
+                <ul class="list-group mb-4">
                     <li class="list-group-item d-flex justify-content-between align-items-center">
                         Сейчас в блоге статей
                         <span class="badge badge-primary badge-pill">{{ $articles->count()}}</span>
@@ -35,8 +37,18 @@ use App\Models\Article;
                         <span class="badge badge-primary badge-pill badge-danger">{{ $articles->where('status', '=', Article::STATUS_HIDDEN)->count() }}</span>
                     </li>
                 </ul>
-                <a class="btn btn-primary btn-sm float-left mt-4" href="{{ route('admin.article.index') }}">Редактировать</a>
-                <a class="btn btn-success btn-sm float-right mt-4" href="{{ route('admin.article.create') }}">Написать</a>
+                <a class="btn btn-primary btn-sm float-left" href="{{ route('admin.article.index') }}">Редактировать</a>
+                <a class="btn btn-success btn-sm float-right" href="{{ route('admin.article.create') }}">Написать</a>
+                <div class="clearfix mb-5"></div>
+                <h5 class="mb-3">Новости</h5>
+                <ul class="list-group mb-4">
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        Новостей опубликовано
+                        <span class="badge badge-primary badge-pill">{{ $news->count()}}</span>
+                    </li>
+                </ul>
+                <a class="btn btn-outline-primary btn-sm float-left" href="{{ route('admin.news.index') }}">Редактировать</a>
+                <a class="btn btn-outline-success btn-sm float-right" href="{{ route('admin.news.create') }}">Написать</a>
             </div>
         </div>
     </div>

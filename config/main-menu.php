@@ -6,8 +6,8 @@ return [
         'title' => 'Главная',
     ],
     [
-        'route' => 'about',
-        'title' => 'О нас',
+        'route' => 'news.index',
+        'title' => 'Новости',
     ],
     [
         'route' => 'contacts.create',

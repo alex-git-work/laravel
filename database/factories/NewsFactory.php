@@ -2,15 +2,13 @@
 
 namespace Database\Factories;
 
-use App\Models\Article;
-use App\Models\Comment;
-use App\Models\User;
+use App\Models\News;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends Factory<Comment>
+ * @extends Factory<News>
  */
-class CommentFactory extends Factory
+class NewsFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -20,9 +18,8 @@ class CommentFactory extends Factory
     public function definition(): array
     {
         return [
-            'article_id' => Article::factory(),
-            'author_id' => User::factory(),
-            'body' => fake()->paragraph(rand(2, 3), false),
+            'title' => ucfirst(fake()->words(rand(5, 7), true)),
+            'body' => fake()->paragraphs(rand(3, 6), true),
             'created_at' => fake()->dateTimeThisYear(),
         ];
     }
