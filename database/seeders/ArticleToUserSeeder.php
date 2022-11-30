@@ -37,7 +37,8 @@ class ArticleToUserSeeder extends Seeder
         Article::all()->each(function (Article $a) {
             User::all()->each(function (User $u) use ($a) {
                 Comment::factory(rand(0, 1))->create([
-                    'article_id' => $a->id,
+                    'commentable_id' => $a->id,
+                    'commentable_type' => Article::MORPH_TYPE,
                     'author_id' => $u->id,
                     'created_at' => fake()->dateTimeThisYear($a->created_at),
                 ]);

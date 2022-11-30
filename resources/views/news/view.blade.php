@@ -3,8 +3,10 @@
 /**
  * @var string $title
  * @var News $news
+ * @var Comment $comment
  */
 
+use App\Models\Comment;
 use App\Models\News;
 
 @endphp
@@ -30,5 +32,9 @@ use App\Models\News;
             <a class="float-left text-success border-top pt-3" href="{{ route('admin.news.edit', ['news' => $news]) }}">Редактировать</a>
             <div class="clearfix"></div>
         @endadmin
+        @forelse($news->comments as $comment)
+            {{ $comment->body }}<br><br>
+        @empty
+        @endforelse
     </div>
 @endsection

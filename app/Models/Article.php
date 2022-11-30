@@ -6,6 +6,7 @@ use App\Events\ArticleCreated;
 use App\Events\ArticleDestroyed;
 use App\Events\ArticleUpdated;
 use App\Models\Interfaces\TagsProvider;
+use App\Models\Traits\Commentable;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -14,6 +15,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Support\Arr;
 
 /**
@@ -32,7 +34,7 @@ use Illuminate\Support\Arr;
  * Relations
  * @property User $user
  * @property Collection $tags
- * @property Collection $comments
+ * @property MorphMany $comments
  * @property Collection $history
  *
  * @mixin IdeHelperArticle
@@ -40,6 +42,7 @@ use Illuminate\Support\Arr;
 class Article extends Model implements TagsProvider
 {
     use HasFactory;
+    use Commentable;
 
     /**
      * {@inheritdoc}
@@ -69,6 +72,8 @@ class Article extends Model implements TagsProvider
         self::STATUS_HIDDEN,
         self::STATUS_PUBLISHED,
     ];
+
+    public const MORPH_TYPE = 'article';
 
     /**
      * {@inheritdoc}
@@ -111,14 +116,6 @@ class Article extends Model implements TagsProvider
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'author_id');
-    }
-
-    /**
-     * @return HasMany
-     */
-    public function comments(): HasMany
-    {
-        return $this->hasMany(Comment::class)->orderBy('created_at', 'desc');
     }
 
     /**

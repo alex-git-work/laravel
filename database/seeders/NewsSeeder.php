@@ -2,7 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\Models\Comment;
 use App\Models\News;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class NewsSeeder extends Seeder
@@ -14,6 +16,16 @@ class NewsSeeder extends Seeder
      */
     public function run(): void
     {
-        News::factory(300)->create();
+        News::factory(30)->create();
+
+        News::all()->each(function (News $n) {
+            User::all()->each(function () use ($n) {
+                Comment::factory(rand(0, 1))->create([
+                    'commentable_id' => $n->id,
+                    'commentable_type' => News::MORPH_TYPE,
+                    'created_at' => fake()->dateTimeThisYear($n->created_at),
+                ]);
+            });
+        });
     }
 }
