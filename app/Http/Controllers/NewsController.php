@@ -19,7 +19,7 @@ class NewsController extends Controller
      */
     public function index(): View
     {
-        $news = News::orderBy('created_at')->simplePaginate(config('pagination.public_section.news'));
+        $news = News::orderBy('created_at', 'desc')->simplePaginate(config('pagination.public_section.news'));
 
         return view('news.index', [
             'news' => $news

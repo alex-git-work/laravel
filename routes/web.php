@@ -32,15 +32,14 @@ Route::get('/', function () {
     ]);
 })->name('index');
 
+Route::get('/about', fn () => view('about'))->name('about');
+
 Route::resource('news', NewsController::class)->only(['index', 'show']);
 
-Route::get('/contacts', [MessageController::class, 'create'])->name('contacts.create');
-
-Route::post('/contacts', [MessageController::class, 'store'])->name('contacts.store');
-
-Route::get('/admin/feedback', function () {
-    return view('feedback', ['messages' => Message::all()->sortByDesc('created_at')]);
-})->name('admin.feedback');
+Route::controller(MessageController::class)->group(function () {
+    Route::get('/contacts', 'create')->name('contacts.create');
+    Route::post('/contacts', 'store')->name('contacts.store');
+});
 
 Route::resource('article', ArticleController::class)->except('index');
 
@@ -52,11 +51,18 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function 
     Route::get('/', [AdminController::class, 'index'])->name('admin');
 
     Route::name('admin.')->group(function () {
-        Route::get('/article/history/{article}', [AdminArticleController::class, 'history'])->name('article.history');
-        Route::get('/article/hidden', [AdminArticleController::class, 'hidden'])->name('article.hidden');
-        Route::patch('/article/{article}/toggle', [AdminArticleController::class, 'toggle'])->name('article.toggle');
+        Route::controller(AdminArticleController::class)->group(function () {
+            Route::get('/article/history/{article}', 'history')->name('article.history');
+            Route::get('/article/hidden', 'hidden')->name('article.hidden');
+            Route::patch('/article/{article}/toggle', 'toggle')->name('article.toggle');
+        });
+
         Route::resource('article', AdminArticleController::class)->except('show');
 
         Route::resource('news', AdminNewsController::class)->except('show');
+
+        Route::get('feedback', function () {
+            return view('admin.feedback', ['messages' => Message::orderBy('created_at', 'desc')->paginate(config('pagination.admin_section.articles'))]);
+        })->name('feedback');
     });
 });

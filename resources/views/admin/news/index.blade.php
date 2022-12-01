@@ -1,12 +1,12 @@
 @php
 
 /**
- * @var Collection $news
+ * @var LengthAwarePaginator $news
  * @var News $item
  */
 
-use Illuminate\Database\Eloquent\Collection;
 use App\Models\News;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 @endphp
 

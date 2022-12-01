@@ -16,13 +16,14 @@ class NewsSeeder extends Seeder
      */
     public function run(): void
     {
-        News::factory(30)->create();
+        News::factory(25)->create();
 
         News::all()->each(function (News $n) {
-            User::all()->each(function () use ($n) {
+            User::all()->each(function (User $u) use ($n) {
                 Comment::factory(rand(0, 1))->create([
                     'commentable_id' => $n->id,
                     'commentable_type' => News::MORPH_TYPE,
+                    'author_id' => $u->id,
                     'created_at' => fake()->dateTimeThisYear($n->created_at),
                 ]);
             });

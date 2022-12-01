@@ -34,4 +34,9 @@ return [
         'title' => 'Новости',
         'icon' => 'fas fa-bars',
     ],
+    [
+        'route' => 'admin.feedback',
+        'title' => 'Обратная связь',
+        'icon' => 'fa fa-envelope',
+    ],
 ];

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
@@ -31,11 +32,12 @@ class Message extends Model
     ];
 
     /**
-     * @param string $value
-     * @return void
+     * @return Attribute
      */
-    public function setEmailAttribute(string $value): void
+    protected function email(): Attribute
     {
-        $this->attributes['email'] = Str::lower($value);
+        return Attribute::make(
+            set: fn ($value) => Str::lower($value),
+        );
     }
 }
