@@ -45,7 +45,7 @@ Route::resource('article', ArticleController::class)->except('index');
 
 Route::get('/tag/{tag}', [TagsController::class, 'index'])->name('tag.index');
 
-Route::post('/comment/{article}', [CommentController::class, 'store'])->name('comment.store');
+Route::post('/comment', [CommentController::class, 'store'])->name('comment.store');
 
 Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function () {
     Route::get('/', [AdminController::class, 'index'])->name('admin');
@@ -65,4 +65,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function 
             return view('admin.feedback', ['messages' => Message::orderBy('created_at', 'desc')->paginate(config('pagination.admin_section.articles'))]);
         })->name('feedback');
     });
+});
+Route::get('/test', function () {
+    $c = \App\Models\News::whereId(15)->first();
+    dump($c->comments);
 });

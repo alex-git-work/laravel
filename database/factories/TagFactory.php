@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Article;
+use App\Models\News;
 use App\Models\Tag;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -17,8 +19,13 @@ class TagFactory extends Factory
      */
     public function definition(): array
     {
+        $condition = rand(0, 1);
+
         return [
+            'taggable_type' => $condition ? Article::MORPH_TYPE : News::MORPH_TYPE,
+            'taggable_id' => $condition ? Article::factory() : News::factory(),
             'name' => fake()->unique()->word(),
+            'created_at' => fake()->dateTimeThisYear(),
         ];
     }
 }

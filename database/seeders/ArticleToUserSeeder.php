@@ -25,12 +25,10 @@ class ArticleToUserSeeder extends Seeder
 
         User::all()->where('role_id', '!=', Role::ADMIN)->each(function (User $u) {
             Article::factory(rand(5, 10))->create(['author_id' => $u->id])->each(function (Article $a) {
-                $a->tags()->attach(
-                    Tag::all()
-                        ->random(rand(4, 8))
-                        ->pluck('id')
-                        ->toArray()
-                );
+//                Tag::factory(rand(0, 5))->create([
+//                    'taggable_type' => Article::MORPH_TYPE,
+//                    'taggable_id' => $a->id,
+//                ]);
             });
         });
 

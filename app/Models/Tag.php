@@ -13,10 +13,14 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  * This is the model class for table "tags".
  *
  * @property int $id
+ * @property int $taggable_type
+ * @property int $taggable_id
  * @property string $name
  * @property Carbon $created_at
  * @property Carbon $updated_at
- * @property Collection $articles
+ *
+ * Relations
+ * @property Article|News $taggable
  *
  * @mixin IdeHelperTag
  */

@@ -30,11 +30,14 @@ use App\Models\News;
         <p class="mb-5">{!! nl2br(e($news->body)) !!}</p>
         @admin
             <a class="float-left text-success border-top pt-3" href="{{ route('admin.news.edit', ['news' => $news]) }}">Редактировать</a>
-            <div class="clearfix"></div>
+            <div class="clearfix mb-5"></div>
         @endadmin
-        @forelse($news->comments as $comment)
-            {{ $comment->body }}<br><br>
-        @empty
-        @endforelse
+
+        @include('layout.comment.add-form', ['type' => News::MORPH_TYPE, 'id' => $news->id])
+
+        @if($news->comments->count() > 0)
+            @include('layout.comment.list', ['comments' => $news->comments()->orderBy('created_at', 'desc')->get()])
+            <br>
+        @endif
     </div>
 @endsection

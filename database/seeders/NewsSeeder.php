@@ -24,9 +24,13 @@ class NewsSeeder extends Seeder
                     'commentable_id' => $n->id,
                     'commentable_type' => News::MORPH_TYPE,
                     'author_id' => $u->id,
-                    'created_at' => fake()->dateTimeThisYear($n->created_at),
                 ]);
             });
+
+//            Tag::factory(rand(0, 5))->create([
+//                'taggable_type' => News::MORPH_TYPE,
+//                'taggable_id' => $n->id,
+//            ]);
         });
     }
 }

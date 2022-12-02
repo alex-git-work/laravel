@@ -20,9 +20,11 @@ class CommentFactory extends Factory
      */
     public function definition(): array
     {
+        $condition = rand(0, 1);
+
         return [
-            'commentable_id' => rand(0, 1) ? Article::factory() : News::factory(),
-            'commentable_type' => rand(0, 1) ? Article::MORPH_TYPE : News::MORPH_TYPE,
+            'commentable_id' => $condition ? Article::factory() : News::factory(),
+            'commentable_type' => $condition ? Article::MORPH_TYPE : News::MORPH_TYPE,
             'author_id' => User::factory(),
             'body' => fake()->paragraph(rand(2, 3), false),
             'created_at' => fake()->dateTimeThisYear(),

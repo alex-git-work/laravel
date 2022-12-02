@@ -35,6 +35,10 @@ use App\Models\News;
                     <hr>
                     <p>{{ Str::limit($item->body, 150) }}</p>
                     <a class="float-left" href="{{ route('news.show', ['news' => $item]) }}">читать далее</a>
+                    @if($item->comments->count() > 0)
+                        <span class="float-left">&nbsp;|&nbsp;</span>
+                        <a class="float-left text-muted" href="{{ route('news.show', ['news' => $item]) . '#comments' }}">Комментарии</a>
+                    @endif
                     @admin
                         <a class="float-right text-success" href="{{ route('admin.news.edit', ['news' => $item]) }}">Редактировать</a>
                     @endadmin
