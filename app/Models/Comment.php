@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * This is the model class for table "comments".
  *
  * @property int $id
- * @property int $commentable_type
+ * @property string $commentable_type
  * @property int $commentable_id
  * @property int $author_id
  * @property string $body

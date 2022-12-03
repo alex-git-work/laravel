@@ -66,7 +66,3 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function 
         })->name('feedback');
     });
 });
-Route::get('/test', function () {
-    $c = \App\Models\News::whereId(15)->first();
-    dump($c->comments);
-});

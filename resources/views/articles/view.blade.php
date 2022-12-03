@@ -23,7 +23,7 @@ use App\Models\Comment;
             <p>{{ $article->preview }}</p>
             <hr>
             <p>{!! nl2br($article->body) !!}</p>
-            @include('layout.tags', ['article' => $article])
+            @include('layout.tags', ['tags' => $article->tags])
 
             @include('layout.article.links', ['article' => $article])
 

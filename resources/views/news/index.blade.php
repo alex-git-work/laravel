@@ -34,6 +34,7 @@ use App\Models\News;
                     <div class="clearfix"></div>
                     <hr>
                     <p>{{ Str::limit($item->body, 150) }}</p>
+                    @include('layout.tags', ['tags' => $item->tags])
                     <a class="float-left" href="{{ route('news.show', ['news' => $item]) }}">читать далее</a>
                     @if($item->comments->count() > 0)
                         <span class="float-left">&nbsp;|&nbsp;</span>

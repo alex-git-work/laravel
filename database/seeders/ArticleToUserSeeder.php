@@ -25,21 +25,22 @@ class ArticleToUserSeeder extends Seeder
 
         User::all()->where('role_id', '!=', Role::ADMIN)->each(function (User $u) {
             Article::factory(rand(5, 10))->create(['author_id' => $u->id])->each(function (Article $a) {
-//                Tag::factory(rand(0, 5))->create([
-//                    'taggable_type' => Article::MORPH_TYPE,
-//                    'taggable_id' => $a->id,
-//                ]);
+                $a->tags()->attach(
+                    Tag::all()
+                        ->random(rand(3, 8))
+                        ->pluck('id')
+                        ->toArray()
+                );
             });
         });
 
         Article::all()->each(function (Article $a) {
             User::all()->each(function (User $u) use ($a) {
-                Comment::factory(rand(0, 1))->create([
+                $a->comments()->saveMany(Comment::factory(rand(0, 1))->create([
+                    'author_id' => $u->id,
                     'commentable_id' => $a->id,
                     'commentable_type' => Article::MORPH_TYPE,
-                    'author_id' => $u->id,
-                    'created_at' => fake()->dateTimeThisYear($a->created_at),
-                ]);
+                ]));
             });
         });
     }

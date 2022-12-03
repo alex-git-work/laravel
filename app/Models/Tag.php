@@ -6,21 +6,19 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 /**
  * This is the model class for table "tags".
  *
  * @property int $id
- * @property int $taggable_type
- * @property int $taggable_id
  * @property string $name
  * @property Carbon $created_at
  * @property Carbon $updated_at
  *
  * Relations
- * @property Article|News $taggable
+ * @property Collection $articles
+ * @property Collection $news
  *
  * @mixin IdeHelperTag
  */
@@ -44,19 +42,19 @@ class Tag extends Model
     }
 
     /**
-     * @return BelongsToMany
+     * @return MorphToMany
      */
-    public function articles(): BelongsToMany
+    public function articles(): MorphToMany
     {
-        return $this->belongsToMany(Article::class);
+        return $this->morphedByMany(Article::class, 'taggable');
     }
 
     /**
-     * @return MorphTo
+     * @return MorphToMany
      */
-    public function taggable(): MorphTo
+    public function news(): MorphToMany
     {
-        return $this->morphTo();
+        return $this->morphedByMany(News::class, 'taggable');
     }
 
     /**

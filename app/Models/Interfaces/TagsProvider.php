@@ -2,7 +2,7 @@
 
 namespace App\Models\Interfaces;
 
-use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\morphToMany;
 
 /**
  * Interface Synchronizer
@@ -10,5 +10,5 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
  */
 interface TagsProvider
 {
-    public function tags(): MorphMany;
+    public function tags(): morphToMany;
 }

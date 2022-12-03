@@ -10,7 +10,7 @@ $article = $article ?? new Article();
 
 @endphp
 
-<div class="mb-5">
+<div class="clearfix mb-5">
     <a class="float-left" href="{{ route('index') }}"><- На главную</a>
     @admin
     <a class="float-right text-success" href="{{ route('admin.article.edit', ['article' => $article]) }}">Редактировать -></a>

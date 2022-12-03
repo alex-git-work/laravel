@@ -1,22 +1,20 @@
 @php
 
 /**
- * @var Article $article
+ * @var Collection $tags
  * @var Tag $tag
  */
 
-use App\Models\Article;
+use Illuminate\Database\Eloquent\Collection;
 use App\Models\Tag;
-
-$article = $article ?? new Article();
 
 @endphp
 
-@if($article->tags->isNotEmpty())
+@if($tags->isNotEmpty())
     <hr>
     <div>
         <span class="text-muted">Метки:</span>
-        @foreach($article->tags as $tag)
+        @foreach($tags as $tag)
             <a class="badge badge-secondary text-white" href="{{ route('tag.index', ['tag' => $tag]) }}">{{ $tag->name }}</a>
         @endforeach
     </div>

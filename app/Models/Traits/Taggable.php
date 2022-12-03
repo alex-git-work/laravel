@@ -3,7 +3,7 @@
 namespace App\Models\Traits;
 
 use App\Models\Tag;
-use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\morphToMany;
 
 /**
  * Trait Taggable
@@ -14,10 +14,10 @@ trait Taggable
     /**
      * Get the entity's tags.
      *
-     * @return MorphMany
+     * @return morphToMany
      */
-    public function tags(): MorphMany
+    public function tags(): morphToMany
     {
-        return $this->morphMany(Tag::class, 'taggable');
+        return $this->morphToMany(Tag::class, 'taggable');
     }
 }
