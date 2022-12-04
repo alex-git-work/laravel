@@ -28,7 +28,7 @@ Auth::routes();
 
 Route::get('/', function () {
     return view('index', [
-        'articles' => Article::active()->with('tags')->simplePaginate(config('pagination.public_section.articles'))
+        'articles' => Article::active()->with(['tags', 'comments'])->simplePaginate(config('pagination.public_section.articles'))
     ]);
 })->name('index');
 

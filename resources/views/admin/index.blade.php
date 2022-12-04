@@ -1,12 +1,18 @@
 @php
 
 /**
- * @var Collection $articles
- * @var Collection $news
+ * @var array $articlesQty
+ * @var Article $maxArticleLength
+ * @var Article $mimArticleLength
+ * @var Article $historyMax
+ * @var Article $commentsMax
+ * @var int $news
+ * @var User $maxArticlesUser
+ * @var int $articlesAvg
  */
 
-use Illuminate\Database\Eloquent\Collection;
 use App\Models\Article;
+use App\Models\User;
 
 @endphp
 
@@ -22,19 +28,48 @@ use App\Models\Article;
                 <h5 class="mb-3">Статьи</h5>
                 <ul class="list-group mb-4">
                     <li class="list-group-item d-flex justify-content-between align-items-center">
-                        Сейчас в блоге статей
-                        <span class="badge badge-primary badge-pill">{{ $articles->count()}}</span>
+                        Общее количество статей
+                        <span class="badge badge-primary badge-pill">{{ $articlesQty['total'] }}</span>
                     </li>
-                    <li class="list-group-item disabled d-flex justify-content-between align-items-center">
-                        Из них:
-                    </li>
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <li class="list-group-item d-flex justify-content-between align-items-center pl-5">
                         Опубликовано
-                        <span class="badge badge-primary badge-pill badge-success">{{ $articles->where('status', '=', Article::STATUS_PUBLISHED)->count() }}</span>
+                        <span class="badge badge-pill badge-success">{{ $articlesQty['published'] }}</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center pl-5">
+                        Скрыто
+                        <span class="badge badge-pill badge-danger">{{ $articlesQty['hidden'] }}</span>
                     </li>
                     <li class="list-group-item d-flex justify-content-between align-items-center">
-                        Скрыто
-                        <span class="badge badge-primary badge-pill badge-danger">{{ $articles->where('status', '=', Article::STATUS_HIDDEN)->count() }}</span>
+                        Самая длинная статья
+                        <span>
+                            <a href="{{ route('article.show', ['article' => $maxArticleLength]) }}" class="mr-2">{{ $maxArticleLength->title }}</a>
+                            <span class="mr-2">кол-во знаков:</span>
+                            <span class="badge badge-pill badge-info">{{ strlen($maxArticleLength->body) }}</span>
+                        </span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        Самая короткая статья
+                        <span>
+                            <a href="{{ route('article.show', ['article' => $mimArticleLength]) }}" class="mr-2">{{ $mimArticleLength->title }}</a>
+                            <span class="mr-2">кол-во знаков:</span>
+                            <span class="badge badge-pill badge-info">{{ strlen($mimArticleLength->body) }}</span>
+                        </span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        Самая непостоянная статья
+                        <span>
+                            <a href="{{ route('article.show', ['article' => $historyMax]) }}" class="mr-2">{{ $historyMax->title }}</a>
+                            <span class="mr-2">изменений:</span>
+                            <span class="badge badge-pill badge-info">{{ $historyMax->history_count }}</span>
+                        </span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        Самая обсуждаемая статья
+                        <span>
+                            <a href="{{ route('article.show', ['article' => $commentsMax]) }}" class="mr-2">{{ $commentsMax->title }}</a>
+                            <span class="mr-2">комментариев:</span>
+                            <span class="badge badge-pill badge-info">{{ $commentsMax->comments_count }}</span>
+                        </span>
                     </li>
                 </ul>
                 <a class="btn btn-primary btn-sm float-left" href="{{ route('admin.article.index') }}">Редактировать</a>
@@ -43,12 +78,28 @@ use App\Models\Article;
                 <h5 class="mb-3">Новости</h5>
                 <ul class="list-group mb-4">
                     <li class="list-group-item d-flex justify-content-between align-items-center">
-                        Новостей опубликовано
-                        <span class="badge badge-primary badge-pill">{{ $news->count()}}</span>
+                        Общее количество новостей
+                        <span class="badge badge-primary badge-pill">{{ $news }}</span>
                     </li>
                 </ul>
                 <a class="btn btn-outline-primary btn-sm float-left" href="{{ route('admin.news.index') }}">Редактировать</a>
                 <a class="btn btn-outline-success btn-sm float-right" href="{{ route('admin.news.create') }}">Написать</a>
+                <div class="clearfix mb-5"></div>
+                <h5 class="mb-3">Пользователи</h5>
+                <ul class="list-group mb-4">
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        Автор, у которого больше всего статей
+                        <span>
+                            <b class="mr-2">{{ $maxArticlesUser->name }}</b>
+                            <span class="mr-2">статей:</span>
+                            <span class="badge badge-primary badge-pill">{{ $maxArticlesUser->articles_count }}</span>
+                        </span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        Средние количество статей у активных пользователей
+                        <span class="badge badge-primary badge-pill">{{ $articlesAvg }}</span>
+                    </li>
+                </ul>
             </div>
         </div>
     </div>
