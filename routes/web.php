@@ -4,7 +4,6 @@ use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\ArticleController as AdminArticleController;
 use App\Http\Controllers\Admin\NewsController as AdminNewsController;
 use App\Http\Controllers\ArticleController;
-use App\Http\Controllers\CommentController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\TagsController;
@@ -34,6 +33,7 @@ Route::get('/', function () {
 
 Route::get('/about', fn () => view('about'))->name('about');
 
+Route::post('/news/{news}/comment', [NewsController::class, 'comment'])->name('news.comment');
 Route::resource('news', NewsController::class)->only(['index', 'show']);
 
 Route::controller(MessageController::class)->group(function () {
@@ -41,11 +41,10 @@ Route::controller(MessageController::class)->group(function () {
     Route::post('/contacts', 'store')->name('contacts.store');
 });
 
+Route::post('/article/{article}/comment', [ArticleController::class, 'comment'])->name('article.comment');
 Route::resource('article', ArticleController::class)->except('index');
 
 Route::get('/tag/{tag}', [TagsController::class, 'index'])->name('tag.index');
-
-Route::post('/comment', [CommentController::class, 'store'])->name('comment.store');
 
 Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function () {
     Route::get('/', [AdminController::class, 'index'])->name('admin');

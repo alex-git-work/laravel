@@ -29,13 +29,19 @@ class AdminController extends Controller
 
             $data['articlesQty'] = Article::selectRaw(
                 'COUNT(*) as total,
-            SUM(status = ' . Article::STATUS_PUBLISHED . ') as published,
-            SUM(status = ' . Article::STATUS_HIDDEN . ') as hidden'
+                SUM(status = ' . Article::STATUS_PUBLISHED . ') as published,
+                SUM(status = ' . Article::STATUS_HIDDEN . ') as hidden'
             )->first()->toArray();
 
-            $data['maxArticleLength'] = Article::where('body', Article::where('status', '=', Article::STATUS_PUBLISHED)->max('body'))->first();
+            $data['maxArticleLength'] = Article::selectRaw('*, LENGTH(body) as length')
+                ->where('status', '=', Article::STATUS_PUBLISHED)
+                ->orderBy('length', 'desc')
+                ->first();
 
-            $data['mimArticleLength'] = Article::where('body', Article::where('status', '=', Article::STATUS_PUBLISHED)->min('body'))->first();
+            $data['mimArticleLength'] = Article::selectRaw('*, LENGTH(body) as length')
+                ->where('status', '=', Article::STATUS_PUBLISHED)
+                ->orderBy('length')
+                ->first();
 
             $data['historyMax'] = Article::where('status', '=', Article::STATUS_PUBLISHED)
                 ->withCount('history')
@@ -52,10 +58,8 @@ class AdminController extends Controller
                 ->first();
 
             $data['articlesAvg'] = User::withCount('articles')
+                ->having('articles_count', '>', 1)
                 ->get()
-                ->filter(function ($value) {
-                    return $value['articles_count'] > 1;
-                })
                 ->avg('articles_count');
 
             $data['news'] = News::count();

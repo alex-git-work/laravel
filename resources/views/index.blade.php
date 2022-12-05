@@ -27,7 +27,7 @@ use Illuminate\Pagination\Paginator;
                     <p>{{ $article->preview }}</p>
                     @include('layout.tags', ['tags' => $article->tags])
                     <a class="float-left" href="{{ route('article.show', ['article' => $article]) }}">Читать далее</a>
-                    @if($article->comments->count() > 0)
+                    @if($article->comments->isNotEmpty())
                         <span class="float-left">&nbsp;|&nbsp;</span>
                         <a class="float-left text-muted" href="{{ route('article.show', ['article' => $article]) . '#comments' }}">Комментарии</a>
                     @endif

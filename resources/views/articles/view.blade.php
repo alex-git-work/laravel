@@ -3,11 +3,13 @@
 /**
  * @var string $title
  * @var Article $article
+ * @var Collection $comments
  * @var Comment $comment
  */
 
 use App\Models\Article;
 use App\Models\Comment;
+use Illuminate\Database\Eloquent\Collection;
 
 @endphp
 
@@ -27,10 +29,10 @@ use App\Models\Comment;
 
             @include('layout.article.links', ['article' => $article])
 
-            @include('layout.comment.add-form', ['type' => Article::MORPH_TYPE, 'id' => $article->id])
+            @include('layout.comment.add-form', ['route' => route('article.comment', ['article' => $article])])
 
-            @if($article->comments->count() > 0)
-                @include('layout.comment.list', ['comments' => $article->comments()->orderBy('created_at', 'desc')->get()])
+            @if($article->comments->isNotEmpty())
+                @include('layout.comment.list', ['comments' => $comments])
                 @include('layout.article.links', ['article' => $article])
                 <br>
             @endif

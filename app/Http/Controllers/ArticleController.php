@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreArticleRequest;
 use App\Models\Article;
+use App\Models\Comment;
 use App\Services\TagsSynchronizer;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 
 /**
@@ -62,8 +64,13 @@ class ArticleController extends Controller
      */
     public function show(Article $article): View
     {
+        $comments = $article->comments()
+            ->orderBy('created_at', 'desc')
+            ->get();
+
         return view('articles.view', [
             'article' => $article,
+            'comments' => $comments,
         ]);
     }
 
@@ -108,5 +115,27 @@ class ArticleController extends Controller
         $article->delete();
 
         return redirect()->route('index')->with('success', 'Статья успешно удалена');
+    }
+
+    /**
+     * Store a newly created comment in storage.
+     *
+     * @param Request $request
+     * @param Article $article
+     * @return RedirectResponse
+     */
+    public function comment(Request $request, Article $article): RedirectResponse
+    {
+        $validated = $request->validate(
+            ['body' => ['required', 'string']],
+            ['body.required' => 'Поле Комментарий обязательно для заполнения']
+        );
+
+        $comment = new Comment($validated);
+        $comment->author_id = auth()->id();
+        $comment->commentable()->associate($article);
+        $comment->save();
+
+        return redirect()->back()->with('success', 'Комментарий успешно добавлен');
     }
 }

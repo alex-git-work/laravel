@@ -44,7 +44,7 @@ use App\Models\User;
                         <span>
                             <a href="{{ route('article.show', ['article' => $maxArticleLength]) }}" class="mr-2">{{ $maxArticleLength->title }}</a>
                             <span class="mr-2">кол-во знаков:</span>
-                            <span class="badge badge-pill badge-info">{{ strlen($maxArticleLength->body) }}</span>
+                            <span class="badge badge-pill badge-info">{{ $maxArticleLength->length }}</span>
                         </span>
                     </li>
                     <li class="list-group-item d-flex justify-content-between align-items-center">
@@ -52,7 +52,7 @@ use App\Models\User;
                         <span>
                             <a href="{{ route('article.show', ['article' => $mimArticleLength]) }}" class="mr-2">{{ $mimArticleLength->title }}</a>
                             <span class="mr-2">кол-во знаков:</span>
-                            <span class="badge badge-pill badge-info">{{ strlen($mimArticleLength->body) }}</span>
+                            <span class="badge badge-pill badge-info">{{ $mimArticleLength->length }}</span>
                         </span>
                     </li>
                     <li class="list-group-item d-flex justify-content-between align-items-center">

@@ -3,11 +3,11 @@
 /**
  * @var string $title
  * @var News $news
- * @var Comment $comment
+ * @var Collection $comments
  */
 
-use App\Models\Comment;
 use App\Models\News;
+use Illuminate\Database\Eloquent\Collection;
 
 @endphp
 
@@ -37,10 +37,10 @@ use App\Models\News;
             @endadmin
         </div>
 
-        @include('layout.comment.add-form', ['type' => News::MORPH_TYPE, 'id' => $news->id])
+        @include('layout.comment.add-form', ['route' => route('news.comment', ['news' => $news])])
 
-        @if($news->comments->count() > 0)
-            @include('layout.comment.list', ['comments' => $news->comments()->orderBy('created_at', 'desc')->get()])
+        @if($news->comments->isNotEmpty())
+            @include('layout.comment.list', ['comments' => $comments])
             <br>
         @endif
     </div>

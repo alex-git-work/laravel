@@ -36,7 +36,7 @@ use App\Models\News;
                     <p>{{ Str::limit($item->body, 150) }}</p>
                     @include('layout.tags', ['tags' => $item->tags])
                     <a class="float-left" href="{{ route('news.show', ['news' => $item]) }}">читать далее</a>
-                    @if($item->comments->count() > 0)
+                    @if($item->comments->isNotEmpty())
                         <span class="float-left">&nbsp;|&nbsp;</span>
                         <a class="float-left text-muted" href="{{ route('news.show', ['news' => $item]) . '#comments' }}">Комментарии</a>
                     @endif
