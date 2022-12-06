@@ -6,7 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 /**
  * This is the model class for table "tags".
@@ -15,7 +15,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property string $name
  * @property Carbon $created_at
  * @property Carbon $updated_at
+ *
+ * Relations
  * @property Collection $articles
+ * @property Collection $news
  *
  * @mixin IdeHelperTag
  */
@@ -39,11 +42,19 @@ class Tag extends Model
     }
 
     /**
-     * @return BelongsToMany
+     * @return MorphToMany
      */
-    public function articles(): BelongsToMany
+    public function articles(): MorphToMany
     {
-        return $this->belongsToMany(Article::class);
+        return $this->morphedByMany(Article::class, 'taggable');
+    }
+
+    /**
+     * @return MorphToMany
+     */
+    public function news(): MorphToMany
+    {
+        return $this->morphedByMany(News::class, 'taggable');
     }
 
     /**

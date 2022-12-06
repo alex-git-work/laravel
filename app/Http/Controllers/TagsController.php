@@ -22,10 +22,19 @@ class TagsController extends Controller
         $articles = $tag->articles()
             ->where('status', Article::STATUS_PUBLISHED)
             ->with('tags')
-            ->simplePaginate(config('pagination.public_section.articles'));
+            ->with('comments')
+            ->orderBy('created_at', 'desc')
+            ->get();
 
-        return view('index', [
+        $news = $tag->news()
+            ->with('tags')
+            ->with('comments')
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return view('tag', [
             'articles' => $articles,
+            'news' => $news,
         ]);
     }
 }

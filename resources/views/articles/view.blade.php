@@ -3,11 +3,13 @@
 /**
  * @var string $title
  * @var Article $article
+ * @var Collection $comments
  * @var Comment $comment
  */
 
 use App\Models\Article;
 use App\Models\Comment;
+use Illuminate\Database\Eloquent\Collection;
 
 @endphp
 
@@ -23,49 +25,15 @@ use App\Models\Comment;
             <p>{{ $article->preview }}</p>
             <hr>
             <p>{!! nl2br($article->body) !!}</p>
-            @include('layout.tags', ['article' => $article])
-            @include('layout.article-links', ['article' => $article])
-            @guest
-                <div class="card">
-                    <h5 class="card-header">Написать комментарий</h5>
-                    <div class="card-body">
-                        <p class="card-text">Только зарегистрированные пользователи могут оставлять комментарии</p>
-                        @if (Route::has('login'))
-                            <a class="btn btn-outline-primary" href="{{ route('login') }}">Войти</a>
-                        @endif
-                    </div>
-                </div>
-            @else
-                @include('layout.flash-success')
-                <form action="{{ route('comment.store', ['article' => $article]) }}" method="post">
-                    @csrf
-                    <div class="card">
-                        <h5 class="card-header">Написать комментарий</h5>
-                        <div class="card-body">
-                            <label class="control-label text-muted" for="body">поле обязательно для заполнения</label>
-                            <p><textarea id="body" name="body" class="form-control form-control-md mb-4 @error('body') is-invalid @enderror" rows="5"></textarea></p>
-                            @error('body')
-                            <div class="alert alert-danger mt-2" role="alert">{{ $message }}</div>
-                            @enderror
-                            <button class="btn btn-success" type="submit">Сохранить</button>
-                        </div>
-                    </div>
-                </form>
-            @endguest
+            @include('layout.tags', ['tags' => $article->tags])
+
+            @include('layout.article.links', ['article' => $article])
+
+            @include('layout.comment.add-form', ['route' => route('article.comment', ['article' => $article])])
+
             @if($article->comments->isNotEmpty())
-                <h3 class="blog-post-title mb-4 mt-5" id="comments">Комментарии</h3>
-                @foreach($article->comments as $comment)
-                    <div class="card mb-4">
-                        <div class="card-body">
-                            <h5 class="card-title float-left">{{ $comment->user->name }}</h5>
-                            <span class="text-muted float-right">{{ $comment->created_at->translatedFormat('j F Y') }}</span>
-                            <div class="clearfix"></div>
-                            <hr>
-                            <p>{{ $comment->body }}</p>
-                        </div>
-                    </div>
-                @endforeach
-                @include('layout.article-links', ['article' => $article])
+                @include('layout.comment.list', ['comments' => $comments])
+                @include('layout.article.links', ['article' => $article])
                 <br>
             @endif
         </div>

@@ -3,9 +3,9 @@
 namespace App\Http\Requests;
 
 use App\Models\Article;
+use App\Models\Traits\HasGetTags;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 
@@ -15,6 +15,8 @@ use Illuminate\Validation\Rule;
  */
 class StoreArticleRequest extends FormRequest
 {
+    use HasGetTags;
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -65,21 +67,6 @@ class StoreArticleRequest extends FormRequest
             'slug.unique' => 'Такой slug уже занят',
             'slug.regex' => 'Введенное значение не соответствует условиям',
         ];
-    }
-
-    /**
-     * @param bool $asArray
-     * @return array|Collection
-     */
-    public function getTags(bool $asArray = false): array|Collection
-    {
-        if ($this->input('tags') === null) {
-            return $asArray ? [] : collect();
-        }
-
-        $tags = Arr::map(explode(',', $this->input('tags')), fn ($value) => trim($value));
-
-        return $asArray ? $tags : collect($tags);
     }
 
     /**

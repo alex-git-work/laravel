@@ -10,15 +10,15 @@ return [
         'title' => 'Новости',
     ],
     [
-        'route' => 'contacts.create',
-        'title' => 'Контакты',
-    ],
-    [
         'route' => 'article.create',
         'title' => 'Создать статью',
     ],
     [
-        'route' => 'admin.feedback',
-        'title' => 'Админ. раздел',
+        'route' => 'about',
+        'title' => 'О нас',
+    ],
+    [
+        'route' => 'contacts.create',
+        'title' => 'Контакты',
     ],
 ];

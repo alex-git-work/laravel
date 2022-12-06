@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\StoreNewsRequest;
 use App\Models\News;
+use App\Services\TagsSynchronizer;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controller;
@@ -40,11 +41,14 @@ class NewsController extends Controller
      * Store a newly created resource in storage.
      *
      * @param StoreNewsRequest $request
+     * @param TagsSynchronizer $synchronizer
      * @return RedirectResponse
      */
-    public function store(StoreNewsRequest $request): RedirectResponse
+    public function store(StoreNewsRequest $request, TagsSynchronizer $synchronizer): RedirectResponse
     {
-        News::create($request->validated());
+        $news = new News($request->validated());
+        $news->save();
+        $synchronizer->sync($request->getTags(), $news);
 
         return redirect()->route('admin.news.index')->with('success', 'Новость успешно добавлена');
     }
@@ -67,11 +71,13 @@ class NewsController extends Controller
      *
      * @param StoreNewsRequest $request
      * @param News $news
+     * @param TagsSynchronizer $synchronizer
      * @return RedirectResponse
      */
-    public function update(StoreNewsRequest $request, News $news): RedirectResponse
+    public function update(StoreNewsRequest $request, News $news, TagsSynchronizer $synchronizer): RedirectResponse
     {
         $news->update($request->validated());
+        $synchronizer->sync($request->getTags(), $news);
 
         return redirect()->route('admin.news.edit', ['news' => $news])->with('success', 'Новость успешно обновлена');
     }

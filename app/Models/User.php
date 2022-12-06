@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Notifications\PasswordReset;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\CanResetPassword;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -146,15 +147,6 @@ class User extends Model implements Authenticatable, CanResetPassword
     }
 
     /**
-     * @param string $password
-     * @return void
-     */
-    public function setPasswordAttribute(string $password): void
-    {
-        $this->attributes['password'] = Hash::make($password);
-    }
-
-    /**
      * @return bool
      */
     public function isAdmin(): bool
@@ -168,5 +160,15 @@ class User extends Model implements Authenticatable, CanResetPassword
     public function isNotAdmin(): bool
     {
         return !$this->isAdmin();
+    }
+
+    /**
+     * @return Attribute
+     */
+    protected function password(): Attribute
+    {
+        return Attribute::make(
+            set: fn ($value) => Hash::make($value),
+        );
     }
 }

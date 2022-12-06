@@ -2,7 +2,11 @@
 
 namespace App\Models;
 
+use App\Models\Interfaces\TagsProvider;
+use App\Models\Traits\Commentable;
+use App\Models\Traits\Taggable;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -17,12 +21,18 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property Carbon $updated_at
  * @property Carbon $deleted_at
  *
+ * Relations
+ * @property Collection $tags
+ * @property Collection $comments
+ *
  * @mixin IdeHelperNews
  */
-class News extends Model
+class News extends Model implements TagsProvider
 {
     use HasFactory;
     use SoftDeletes;
+    use Taggable;
+    use Commentable;
 
     /**
      * {@inheritdoc}
@@ -31,4 +41,6 @@ class News extends Model
         'title',
         'body',
     ];
+
+    public const MORPH_TYPE = 'news';
 }

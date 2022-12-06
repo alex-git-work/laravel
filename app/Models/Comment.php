@@ -6,13 +6,15 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * This is the model class for table "comments".
  *
  * @property int $id
- * @property int $article_id
+ * @property string $commentable_type
+ * @property int $commentable_id
  * @property int $author_id
  * @property string $body
  * @property Carbon $created_at
@@ -21,7 +23,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *
  * Relations
  * @property User $user
- * @property Article $article
+ * @property Article|News $commentable
  *
  * @mixin IdeHelperComment
  */
@@ -39,7 +41,8 @@ class Comment extends Model
      * {@inheritdoc}
      */
     protected $fillable = [
-        'article_id',
+        'commentable_type',
+        'commentable_id',
         'author_id',
         'body',
     ];
@@ -53,10 +56,10 @@ class Comment extends Model
     }
 
     /**
-     * @return BelongsTo
+     * @return MorphTo
      */
-    public function article(): BelongsTo
+    public function commentable(): MorphTo
     {
-        return $this->belongsTo(Article::class);
+        return $this->morphTo();
     }
 }

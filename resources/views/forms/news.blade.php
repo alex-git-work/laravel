@@ -29,6 +29,11 @@ $news = $news ?? new News();
     @enderror
 </div>
 <div class="form-group">
+    <label for="tags">Метки</label>
+    <input type="text" class="form-control text-primary" id="tags" name="tags" value="{{ old('tags', $news->tags->pluck('name')->implode(',')) }}">
+    <small id="slugHelp" class="form-text text-muted">метки вводятся через запятую</small>
+</div>
+<div class="form-group">
     <button class="btn btn-success float-left" type="submit">Сохранить</button>
     @if($news->id)
         <a class="btn btn-danger float-right" href="#" onclick="$('.news-destroy').trigger('submit')">Удалить</a>

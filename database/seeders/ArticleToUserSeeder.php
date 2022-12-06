@@ -27,7 +27,7 @@ class ArticleToUserSeeder extends Seeder
             Article::factory(rand(5, 10))->create(['author_id' => $u->id])->each(function (Article $a) {
                 $a->tags()->attach(
                     Tag::all()
-                        ->random(rand(4, 8))
+                        ->random(rand(3, 8))
                         ->pluck('id')
                         ->toArray()
                 );
@@ -36,11 +36,11 @@ class ArticleToUserSeeder extends Seeder
 
         Article::all()->each(function (Article $a) {
             User::all()->each(function (User $u) use ($a) {
-                Comment::factory(rand(0, 1))->create([
-                    'article_id' => $a->id,
+                $a->comments()->saveMany(Comment::factory(rand(0, 1))->create([
                     'author_id' => $u->id,
-                    'created_at' => fake()->dateTimeThisYear($a->created_at),
-                ]);
+                    'commentable_id' => $a->id,
+                    'commentable_type' => Article::MORPH_TYPE,
+                ]));
             });
         });
     }

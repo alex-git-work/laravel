@@ -2,13 +2,13 @@
 
 namespace Database\Factories;
 
-use App\Models\Tag;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends Factory<Tag>
+ * @extends Factory<User>
  */
-class TagFactory extends Factory
+class MessageFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -18,7 +18,8 @@ class TagFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->unique()->word(),
+            'email' => fake()->unique()->safeEmail(),
+            'body' => fake()->paragraphs(rand(1, 3), true),
             'created_at' => fake()->dateTimeThisYear(),
         ];
     }

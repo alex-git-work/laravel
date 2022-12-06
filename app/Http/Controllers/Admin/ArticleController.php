@@ -24,7 +24,7 @@ class ArticleController extends Controller
     public function index(): View
     {
         return view('admin.article.index', [
-            'articles' => Article::where('status', Article::STATUS_PUBLISHED)->paginate(config('pagination.admin_section.articles')),
+            'articles' => Article::where('status', Article::STATUS_PUBLISHED)->with('history')->paginate(config('pagination.admin_section.articles')),
             'is_active' => true,
         ]);
     }
