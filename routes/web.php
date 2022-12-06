@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\ArticleController as AdminArticleController;
 use App\Http\Controllers\Admin\NewsController as AdminNewsController;
+use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\NewsController;
@@ -60,8 +61,14 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function 
 
         Route::resource('news', AdminNewsController::class)->except('show');
 
-        Route::get('feedback', function () {
+        Route::get('/feedback', function () {
             return view('admin.feedback', ['messages' => Message::orderBy('created_at', 'desc')->paginate(config('pagination.admin_section.articles'))]);
         })->name('feedback');
+
+        Route::controller(ReportController::class)->group(function () {
+            Route::get('/report', 'index')->name('report.index');
+            Route::get('/report/total', 'total')->name('report.total');
+            Route::post('/report', 'store')->name('report.store');
+        });
     });
 });

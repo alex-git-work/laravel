@@ -28,3 +28,5 @@
 <script src="/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
 <!-- AdminLTE App -->
 <script src="/dist/js/adminlte.js"></script>
+<!-- page specific scripts -->
+@yield('page-specific-scripts')
