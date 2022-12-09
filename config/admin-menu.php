@@ -39,4 +39,9 @@ return [
         'title' => 'Обратная связь',
         'icon' => 'fa fa-envelope',
     ],
+    [
+        'route' => 'admin.report.index',
+        'title' => 'Отчёты',
+        'icon' => 'fas fa-file-contract',
+    ],
 ];
