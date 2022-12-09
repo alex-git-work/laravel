@@ -29,7 +29,7 @@ class TotalReport implements ShouldQueue
 
     private array $params;
     private User $user;
-    public array $report = [];
+    private array $report = [];
 
     /**
      * Create a new job instance.
