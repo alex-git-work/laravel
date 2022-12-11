@@ -20,3 +20,4 @@
         text: 'Thumbnail'
     });
 </script>
+@vite('resources/js/app.js')
