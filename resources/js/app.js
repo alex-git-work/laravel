@@ -1,2 +1,3 @@
 import './bootstrap';
-import './echo';
+import './channels/echo';
+import './channels/article';
