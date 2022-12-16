@@ -18,7 +18,10 @@
     <link href="/css/blog.css" rel="stylesheet">
 
     <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+
+    <!-- Assets -->
+    @vite('resources/js/app.js')
 </head>
 
 <body id="top" class="d-flex flex-column min-vh-100">
@@ -37,6 +40,7 @@
 </main><!-- /.container -->
 
 @include('layout.footer')
+@include('layout.modal')
 
 </body>
 </html>

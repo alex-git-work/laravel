@@ -28,4 +28,6 @@
     <link rel="stylesheet" href="/plugins/summernote/summernote-bs4.min.css">
     <!-- Custom styles for this template -->
     <link rel="stylesheet" href="/css/admin.css">
+    <!-- Assets -->
+    @vite('resources/js/app.js')
 </head>

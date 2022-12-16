@@ -26,3 +26,16 @@ window.Echo = new Echo({
     broadcaster: 'socket.io',
     host: window.location.hostname + ':6001'
 });
+
+/**
+ * Restores default state of modal window when it's closed.
+ */
+$('#staticBackdrop').on('hidden.bs.modal', function () {
+    $('#staticBackdropLabel').text('');
+    $('.modal-body').empty();
+    $('.modal-footer').empty().prepend($('<button>', {
+        type: 'button',
+        class: 'btn btn-secondary js-close',
+        text: 'Закрыть'
+    }).attr('data-dismiss', 'modal'));
+});

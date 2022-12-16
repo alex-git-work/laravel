@@ -72,9 +72,3 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function 
         });
     });
 });
-Route::get('/test', function () {
-    $r = app('redis');
-    dump($r);
-
-    event(new \App\Events\TestEvent('ws-connection test successfully passed'));
-});

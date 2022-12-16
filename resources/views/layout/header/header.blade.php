@@ -24,10 +24,10 @@
                         <a class="btn btn-sm btn-outline-secondary ml-2" href="{{ route('register') }}">{{ __('Register') }}</a>
                     @endif
                 @else
-                    <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         {{ Auth::user()->name }}
                     </a>
-                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         @admin
                             <a class="dropdown-item" href="{{ route('admin') }}" target="_blank">Админка</a>
                         @endadmin
