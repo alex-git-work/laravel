@@ -1,6 +1,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title')</title>
 
     <!-- Google Font: Source Sans Pro -->
@@ -27,4 +28,6 @@
     <link rel="stylesheet" href="/plugins/summernote/summernote-bs4.min.css">
     <!-- Custom styles for this template -->
     <link rel="stylesheet" href="/css/admin.css">
+    <!-- Assets -->
+    @vite('resources/js/app.js')
 </head>

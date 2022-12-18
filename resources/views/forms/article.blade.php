@@ -63,4 +63,4 @@ $article = $article ?? new Article();
         <a class="btn btn-danger float-right" href="#" onclick="$('#article-destroy-form').trigger('submit')">Удалить</a>
     @endif
 </div>
-<div class="clearfix"></div>
+<div class="clearfix mb-5"></div>

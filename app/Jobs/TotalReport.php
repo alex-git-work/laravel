@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Events\ReportCreated as ReportCreatedEvent;
 use App\Mail\ReportCreated;
 use App\Models\Article;
 use App\Models\Comment;
@@ -63,6 +64,8 @@ class TotalReport implements ShouldQueue
         }
 
         Mail::to($this->user->email)->queue(new ReportCreated($this->report));
+
+        event(new ReportCreatedEvent($this->report, $this->user->id));
     }
 
     /**

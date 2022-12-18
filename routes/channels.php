@@ -1,5 +1,7 @@
 <?php
 
+use App\Broadcasting\ArticleChannel;
+use App\Broadcasting\ReportChannel;
 use Illuminate\Support\Facades\Broadcast;
 
 /*
@@ -16,3 +18,7 @@ use Illuminate\Support\Facades\Broadcast;
 Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
     return (int) $user->id === (int) $id;
 });
+
+Broadcast::channel('admin.article', ArticleChannel::class);
+
+Broadcast::channel('admin.report.{id}', ReportChannel::class);
