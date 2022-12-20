@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 
 /**
@@ -30,6 +31,19 @@ class Message extends Model
         'email',
         'body',
     ];
+
+    public const CACHE_TAGS = [
+        'message',
+    ];
+
+    /**
+     * {@inheritdoc}
+     */
+    protected static function boot()
+    {
+        self::created(fn () => Cache::tags(self::CACHE_TAGS)->flush());
+        parent::boot();
+    }
 
     /**
      * @return Attribute

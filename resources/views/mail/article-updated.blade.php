@@ -6,7 +6,7 @@
 
 use App\Models\Article;
 
-$url = route('article.show', ['article' => $article]);
+$url = route('article.show', ['slug' => $article->slug]);
 @endphp
 
 <x-mail::message>

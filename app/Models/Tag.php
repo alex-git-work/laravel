@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use Illuminate\Support\Facades\Cache;
 
 /**
  * This is the model class for table "tags".
@@ -31,6 +32,12 @@ class Tag extends Model
      */
     protected $fillable = [
         'name',
+    ];
+
+    public const CACHE_TAGS = [
+        'tag',
+        'article',
+        'news',
     ];
 
     /**
@@ -62,6 +69,8 @@ class Tag extends Model
      */
     public static function cloud(): Collection
     {
-        return self::has('articles')->get();
+        return Cache::tags(self::CACHE_TAGS)->remember('cloud', config('cache.redis.ttl'), function () {
+            return self::has('articles')->get();
+        });
     }
 }

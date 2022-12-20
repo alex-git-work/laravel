@@ -3,7 +3,7 @@
 /**
  * @var array $articlesQty
  * @var Article $maxArticleLength
- * @var Article $mimArticleLength
+ * @var Article $minArticleLength
  * @var Article $historyMax
  * @var Article $commentsMax
  * @var int $news
@@ -42,7 +42,7 @@ use App\Models\User;
                     <li class="list-group-item d-flex justify-content-between align-items-center">
                         Самая длинная статья
                         <span>
-                            <a href="{{ route('article.show', ['article' => $maxArticleLength]) }}" class="mr-2">{{ $maxArticleLength->title }}</a>
+                            <a href="{{ route('article.show', ['slug' => $maxArticleLength->slug]) }}" class="mr-2">{{ $maxArticleLength->title }}</a>
                             <span class="mr-2">кол-во знаков:</span>
                             <span class="badge badge-pill badge-info">{{ $maxArticleLength->length }}</span>
                         </span>
@@ -50,15 +50,15 @@ use App\Models\User;
                     <li class="list-group-item d-flex justify-content-between align-items-center">
                         Самая короткая статья
                         <span>
-                            <a href="{{ route('article.show', ['article' => $mimArticleLength]) }}" class="mr-2">{{ $mimArticleLength->title }}</a>
+                            <a href="{{ route('article.show', ['slug' => $minArticleLength->slug]) }}" class="mr-2">{{ $minArticleLength->title }}</a>
                             <span class="mr-2">кол-во знаков:</span>
-                            <span class="badge badge-pill badge-info">{{ $mimArticleLength->length }}</span>
+                            <span class="badge badge-pill badge-info">{{ $minArticleLength->length }}</span>
                         </span>
                     </li>
                     <li class="list-group-item d-flex justify-content-between align-items-center">
                         Самая непостоянная статья
                         <span>
-                            <a href="{{ route('article.show', ['article' => $historyMax]) }}" class="mr-2">{{ $historyMax->title }}</a>
+                            <a href="{{ route('article.show', ['slug' => $historyMax->slug]) }}" class="mr-2">{{ $historyMax->title }}</a>
                             <span class="mr-2">изменений:</span>
                             <span class="badge badge-pill badge-info">{{ $historyMax->history_count }}</span>
                         </span>
@@ -66,7 +66,7 @@ use App\Models\User;
                     <li class="list-group-item d-flex justify-content-between align-items-center">
                         Самая обсуждаемая статья
                         <span>
-                            <a href="{{ route('article.show', ['article' => $commentsMax]) }}" class="mr-2">{{ $commentsMax->title }}</a>
+                            <a href="{{ route('article.show', ['slug' => $commentsMax->slug]) }}" class="mr-2">{{ $commentsMax->title }}</a>
                             <span class="mr-2">комментариев:</span>
                             <span class="badge badge-pill badge-info">{{ $commentsMax->comments_count }}</span>
                         </span>

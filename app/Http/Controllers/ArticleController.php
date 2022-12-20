@@ -10,6 +10,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Cache;
 
 /**
  * Class ArticleController
@@ -59,14 +60,16 @@ class ArticleController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param Article $article
+     * @param string $slug
      * @return View
      */
-    public function show(Article $article): View
+    public function show(string $slug): View
     {
-        $comments = $article->comments()
-            ->orderBy('created_at', 'desc')
-            ->get();
+        $article = Cache::tags(Article::CACHE_TAGS)
+            ->remember('article.view.' . $slug, config('cache.redis.ttl'), fn () => Article::where('slug', $slug)->with('comments')->with('tags')->first());
+
+        $comments = Cache::tags(Comment::CACHE_TAGS)
+            ->remember('comments.article.' . $slug, config('cache.redis.ttl'), fn () => $article->comments()->orderBy('created_at', 'desc')->get());
 
         return view('articles.view', [
             'article' => $article,

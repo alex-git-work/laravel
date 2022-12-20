@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Cache;
 
 /**
  * This is the model class for table "articles".
@@ -75,6 +76,11 @@ class Article extends Model implements TagsProvider
 
     public const MORPH_TYPE = 'article';
 
+    public const CACHE_TAGS = [
+        'article',
+        'tag',
+    ];
+
     /**
      * {@inheritdoc}
      */
@@ -98,6 +104,12 @@ class Article extends Model implements TagsProvider
                 'current' => $current,
             ]);
         });
+
+        $fn = fn () => Cache::tags(self::CACHE_TAGS)->flush();
+
+        self::created($fn);
+        self::updated($fn);
+        self::deleted($fn);
 
         parent::boot();
     }

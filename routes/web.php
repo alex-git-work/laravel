@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\ArticleController as AdminArticleController;
+use App\Http\Controllers\Admin\FeedbackController;
 use App\Http\Controllers\Admin\NewsController as AdminNewsController;
 use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\ArticleController;
@@ -9,7 +10,6 @@ use App\Http\Controllers\MessageController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\TagsController;
 use App\Models\Article;
-use App\Models\Message;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -27,23 +27,31 @@ use Illuminate\Support\Facades\Route;
 Auth::routes();
 
 Route::get('/', function () {
+    $articles = Cache::tags(Article::CACHE_TAGS)->remember('index.page.' . request('page', 1), config('cache.redis.ttl'), function () {
+        return Article::active()->with(['tags', 'comments'])->simplePaginate(config('pagination.public_section.articles'));
+    });
+
     return view('index', [
-        'articles' => Article::active()->with(['tags', 'comments'])->simplePaginate(config('pagination.public_section.articles'))
+        'articles' => $articles,
     ]);
 })->name('index');
 
 Route::get('/about', fn () => view('about'))->name('about');
 
-Route::post('/news/{news}/comment', [NewsController::class, 'comment'])->name('news.comment');
-Route::resource('news', NewsController::class)->only(['index', 'show']);
+Route::controller(NewsController::class)->group(function () {
+    Route::get('/news', 'index')->name('news.index');
+    Route::get('/news/{id}', 'show')->name('news.show');
+    Route::post('/news/{news}/comment', 'comment')->name('news.comment');
+});
 
 Route::controller(MessageController::class)->group(function () {
     Route::get('/contacts', 'create')->name('contacts.create');
     Route::post('/contacts', 'store')->name('contacts.store');
 });
 
+Route::get('/article/{slug}', [ArticleController::class, 'show'])->name('article.show');
 Route::post('/article/{article}/comment', [ArticleController::class, 'comment'])->name('article.comment');
-Route::resource('article', ArticleController::class)->except('index');
+Route::resource('article', ArticleController::class)->except('index', 'show');
 
 Route::get('/tag/{tag}', [TagsController::class, 'index'])->name('tag.index');
 
@@ -61,9 +69,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function 
 
         Route::resource('news', AdminNewsController::class)->except('show');
 
-        Route::get('/feedback', function () {
-            return view('admin.feedback', ['messages' => Message::orderBy('created_at', 'desc')->paginate(config('pagination.admin_section.articles'))]);
-        })->name('feedback');
+        Route::get('/feedback', [FeedbackController::class, 'index'])->name('feedback');
 
         Route::controller(ReportController::class)->group(function () {
             Route::get('/report', 'index')->name('report.index');

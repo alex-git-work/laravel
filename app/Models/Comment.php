@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Cache;
 
 /**
  * This is the model class for table "comments".
@@ -46,6 +47,25 @@ class Comment extends Model
         'author_id',
         'body',
     ];
+
+    public const CACHE_TAGS = [
+        'comment',
+        'stat',
+    ];
+
+    /**
+     * {@inheritdoc}
+     */
+    protected static function boot()
+    {
+        $fn = fn () => Cache::tags(self::CACHE_TAGS)->flush();
+
+        self::created($fn);
+        self::updated($fn);
+        self::deleted($fn);
+
+        parent::boot();
+    }
 
     /**
      * @return BelongsTo

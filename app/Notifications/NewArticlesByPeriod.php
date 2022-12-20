@@ -69,7 +69,7 @@ class NewArticlesByPeriod extends Notification
             $message->line('За прошедшую неделю были опубликованы следующие статьи:');
 
             foreach ($this->articles as $a) {
-                $message->line(new HtmlString('<a href="' . route('article.show', ['article' => $a]) . '" target="_blank">' . $a->title . '</a>'));
+                $message->line(new HtmlString('<a href="' . route('article.show', ['slug' => $a->slug]) . '" target="_blank">' . $a->title . '</a>'));
             }
         } else {
             $message->line('За прошедшую неделю не было опубликовано новых статей');
