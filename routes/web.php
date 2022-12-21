@@ -49,9 +49,9 @@ Route::controller(MessageController::class)->group(function () {
     Route::post('/contacts', 'store')->name('contacts.store');
 });
 
-Route::get('/article/{slug}', [ArticleController::class, 'show'])->name('article.show');
-Route::post('/article/{article}/comment', [ArticleController::class, 'comment'])->name('article.comment');
 Route::resource('article', ArticleController::class)->except('index', 'show');
+Route::get('/article/{slug}', [ArticleController::class, 'show'])->can('view', [Article::class, 'slug'])->name('article.show');
+Route::post('/article/{article}/comment', [ArticleController::class, 'comment'])->name('article.comment');
 
 Route::get('/tag/{tag}', [TagsController::class, 'index'])->name('tag.index');
 

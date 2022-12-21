@@ -49,7 +49,8 @@ class Comment extends Model
     ];
 
     public const CACHE_TAGS = [
-        'comment',
+        'article',
+        'news',
         'stat',
     ];
 

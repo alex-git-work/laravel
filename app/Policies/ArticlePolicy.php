@@ -53,12 +53,13 @@ class ArticlePolicy
 
     /**
      * @param User|null $user
-     * @param Article $article
+     * @param string $slug
      * @return Response|bool
      */
-    public function view(?User $user, Article $article): Response|bool
+    public function view(?User $user, string $slug): Response|bool
     {
         $result = true;
+        $article = Article::where('slug', $slug)->firstOrFail();
 
         if ($article->isHidden()) {
             $result = $article->author_id === optional($user)->id || optional($user)->isAdmin();

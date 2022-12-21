@@ -27,7 +27,6 @@ class ArticleController extends Controller
     {
         $this->middleware('auth')->except('show');
         $this->middleware('can:update,article')->only(['edit', 'update', 'destroy']);
-        $this->middleware('can:view,article')->only('show');
     }
 
     /**
@@ -66,10 +65,11 @@ class ArticleController extends Controller
     public function show(string $slug): View
     {
         $article = Cache::tags(Article::CACHE_TAGS)
-            ->remember('article.view.' . $slug, config('cache.redis.ttl'), fn () => Article::where('slug', $slug)->with('comments')->with('tags')->first());
+            ->remember('article.view.' . $slug, config('cache.redis.ttl'), fn () => Article::where('slug', $slug)->with('comments')->with('tags')->firstOrFail());
 
-        $comments = Cache::tags(Comment::CACHE_TAGS)
-            ->remember('comments.article.' . $slug, config('cache.redis.ttl'), fn () => $article->comments()->orderBy('created_at', 'desc')->get());
+        $comments = $article->comments()
+            ->orderBy('created_at', 'desc')
+            ->get();
 
         return view('articles.view', [
             'article' => $article,

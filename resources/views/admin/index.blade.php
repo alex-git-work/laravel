@@ -8,7 +8,7 @@
  * @var Article $commentsMax
  * @var int $news
  * @var User $maxArticlesUser
- * @var int $articlesAvg
+ * @var float $articlesAvg
  */
 
 use App\Models\Article;

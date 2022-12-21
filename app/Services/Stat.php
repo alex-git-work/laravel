@@ -105,9 +105,9 @@ class Stat
     }
 
     /**
-     * @return int
+     * @return float
      */
-    public static function articlesAvg(): int
+    public static function articlesAvg(): float
     {
         return User::withCount('articles')
             ->having('articles_count', '>', 1)

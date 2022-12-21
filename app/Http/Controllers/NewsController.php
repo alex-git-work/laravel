@@ -43,10 +43,11 @@ class NewsController extends Controller
     public function show(int $id): View
     {
         $news = Cache::tags(News::CACHE_TAGS)
-            ->remember('news.view.' . $id, config('cache.redis.ttl'), fn () => News::where('id', $id)->with('comments')->with('tags')->first());
+            ->remember('news.view.' . $id, config('cache.redis.ttl'), fn () => News::where('id', $id)->with('comments')->with('tags')->firstOrFail());
 
-        $comments = Cache::tags(Comment::CACHE_TAGS)
-            ->remember('comments.news.' . $id, config('cache.redis.ttl'), fn () => $news->comments()->orderBy('created_at', 'desc')->get());
+        $comments = $news->comments()
+            ->orderBy('created_at', 'desc')
+            ->get();
 
         return view('news.view', [
             'news' => $news,
