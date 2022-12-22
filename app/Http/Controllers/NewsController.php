@@ -8,6 +8,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Cache;
 
 /**
  * Class NewsController
@@ -22,9 +23,11 @@ class NewsController extends Controller
      */
     public function index(): View
     {
-        $news = News::orderBy('created_at', 'desc')
-            ->with(['tags', 'comments'])
-            ->simplePaginate(config('pagination.public_section.news'));
+        $news = Cache::tags(News::CACHE_TAGS)->remember('news.index.page.' . request('page', 1), config('cache.redis.ttl'), function () {
+            return News::orderBy('created_at', 'desc')
+                ->with(['tags', 'comments'])
+                ->simplePaginate(config('pagination.public_section.news'));
+        });
 
         return view('news.index', [
             'news' => $news
@@ -34,11 +37,14 @@ class NewsController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param News $news
+     * @param int $id
      * @return View
      */
-    public function show(News $news): View
+    public function show(int $id): View
     {
+        $news = Cache::tags(News::CACHE_TAGS)
+            ->remember('news.view.' . $id, config('cache.redis.ttl'), fn () => News::where('id', $id)->with('comments')->with('tags')->firstOrFail());
+
         $comments = $news->comments()
             ->orderBy('created_at', 'desc')
             ->get();

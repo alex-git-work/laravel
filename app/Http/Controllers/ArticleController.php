@@ -10,6 +10,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Cache;
 
 /**
  * Class ArticleController
@@ -26,7 +27,6 @@ class ArticleController extends Controller
     {
         $this->middleware('auth')->except('show');
         $this->middleware('can:update,article')->only(['edit', 'update', 'destroy']);
-        $this->middleware('can:view,article')->only('show');
     }
 
     /**
@@ -59,11 +59,14 @@ class ArticleController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param Article $article
+     * @param string $slug
      * @return View
      */
-    public function show(Article $article): View
+    public function show(string $slug): View
     {
+        $article = Cache::tags(Article::CACHE_TAGS)
+            ->remember('article.view.' . $slug, config('cache.redis.ttl'), fn () => Article::where('slug', $slug)->with('comments')->with('tags')->firstOrFail());
+
         $comments = $article->comments()
             ->orderBy('created_at', 'desc')
             ->get();

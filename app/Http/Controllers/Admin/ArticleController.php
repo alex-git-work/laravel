@@ -9,6 +9,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Cache;
 
 /**
  * Class ArticleController
@@ -23,8 +24,12 @@ class ArticleController extends Controller
      */
     public function index(): View
     {
+        $articles = Cache::tags(Article::CACHE_TAGS)->remember('admin.article.index.page.' . request('page', 1), config('cache.redis.ttl'), function () {
+            return Article::where('status', Article::STATUS_PUBLISHED)->with('history')->paginate(config('pagination.admin_section.articles'));
+        });
+
         return view('admin.article.index', [
-            'articles' => Article::where('status', Article::STATUS_PUBLISHED)->with('history')->paginate(config('pagination.admin_section.articles')),
+            'articles' => $articles,
             'is_active' => true,
         ]);
     }
@@ -36,8 +41,12 @@ class ArticleController extends Controller
      */
     public function hidden(): View
     {
+        $articles = Cache::tags(Article::CACHE_TAGS)->remember('admin.article.hidden.page.' . request('page', 1), config('cache.redis.ttl'), function () {
+            return Article::where('status', Article::STATUS_HIDDEN)->paginate(config('pagination.admin_section.articles'));
+        });
+
         return view('admin.article.hidden', [
-            'articles' => Article::where('status', Article::STATUS_HIDDEN)->paginate(config('pagination.admin_section.articles')),
+            'articles' => $articles,
             'is_active' => false,
         ]);
     }

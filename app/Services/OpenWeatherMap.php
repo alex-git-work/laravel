@@ -4,7 +4,6 @@ namespace App\Services;
 
 use App\Models\Interfaces\Weather;
 use GuzzleHttp\Client;
-use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Support\Facades\Cache;
 use Nette\Utils\Json;
 use Nette\Utils\JsonException;
@@ -167,7 +166,6 @@ class OpenWeatherMap implements Weather
 
     /**
      * @return void
-     * @throws GuzzleException
      * @throws JsonException
      */
     public function init(): void
@@ -178,13 +176,10 @@ class OpenWeatherMap implements Weather
 
     /**
      * @return string
-     * @throws GuzzleException
      */
     protected function sendRequest(): string
     {
-        $data = Cache::get(self::CACHE_KEY_FORECAST);
-
-        if ($data === null) {
+        return Cache::remember(self::CACHE_KEY_FORECAST, self::CACHE_TTL, function () {
             $client = new Client();
 
             $response = $client->request('GET', $this->url, [
@@ -198,17 +193,12 @@ class OpenWeatherMap implements Weather
                 ],
             ]);
 
-            $data = $response->getBody()->getContents();
-
-            Cache::put(self::CACHE_KEY_FORECAST, $data, self::CACHE_TTL);
-        }
-
-        return $data;
+            return $response->getBody()->getContents();
+        });
     }
 
     /**
      * @return void
-     * @throws GuzzleException
      * @throws JsonException
      */
     protected function setData(): void

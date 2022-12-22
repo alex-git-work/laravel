@@ -52,7 +52,7 @@ class ArticleUpdated implements ShouldBroadcast
 
         return [
             'title' => $this->article->title,
-            'link' => route('article.show', ['article' => $this->article]),
+            'link' => route('article.show', ['slug' => $this->article->slug]),
             'old' => $history->old,
             'current' => $history->current,
         ];

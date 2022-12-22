@@ -27,10 +27,10 @@ use Illuminate\Database\Eloquent\Collection;
                 <p class="blog-post-meta">{{ $article->created_at->translatedFormat('j F Y') }}</p>
                 <p>{{ $article->preview }}</p>
                 @include('layout.tags', ['tags' => $article->tags])
-                <a class="float-left" href="{{ route('article.show', ['article' => $article]) }}">Читать далее</a>
+                <a class="float-left" href="{{ route('article.show', ['slug' => $article->slug]) }}">Читать далее</a>
                 @if($article->comments->isNotEmpty())
                     <span class="float-left">&nbsp;|&nbsp;</span>
-                    <a class="float-left text-muted" href="{{ route('article.show', ['article' => $article]) . '#comments' }}">Комментарии</a>
+                    <a class="float-left text-muted" href="{{ route('article.show', ['slug' => $article->slug]) . '#comments' }}">Комментарии</a>
                 @endif
                 @can('update', $article)
                     <a class="float-right text-success" href="{{ route('article.edit', ['article' => $article]) }}">Редактировать</a>
@@ -50,10 +50,10 @@ use Illuminate\Database\Eloquent\Collection;
                     <hr>
                     <p>{{ Str::limit($item->body, 150) }}</p>
                     @include('layout.tags', ['tags' => $item->tags])
-                    <a class="float-left" href="{{ route('news.show', ['news' => $item]) }}">читать далее</a>
+                    <a class="float-left" href="{{ route('news.show', ['id' => $item->id]) }}">читать далее</a>
                     @if($item->comments->isNotEmpty())
                         <span class="float-left">&nbsp;|&nbsp;</span>
-                        <a class="float-left text-muted" href="{{ route('news.show', ['news' => $item]) . '#comments' }}">Комментарии</a>
+                        <a class="float-left text-muted" href="{{ route('news.show', ['id' => $item->id]) . '#comments' }}">Комментарии</a>
                     @endif
                     @admin
                     <a class="float-right text-success" href="{{ route('admin.news.edit', ['news' => $item]) }}">Редактировать</a>

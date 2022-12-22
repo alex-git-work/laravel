@@ -35,10 +35,10 @@ use App\Models\News;
                     <hr>
                     <p>{{ Str::limit($item->body, 150) }}</p>
                     @include('layout.tags', ['tags' => $item->tags])
-                    <a class="float-left" href="{{ route('news.show', ['news' => $item]) }}">читать далее</a>
+                    <a class="float-left" href="{{ route('news.show', ['id' => $item->id]) }}">читать далее</a>
                     @if($item->comments->isNotEmpty())
                         <span class="float-left">&nbsp;|&nbsp;</span>
-                        <a class="float-left text-muted" href="{{ route('news.show', ['news' => $item]) . '#comments' }}">Комментарии</a>
+                        <a class="float-left text-muted" href="{{ route('news.show', ['id' => $item->id]) . '#comments' }}">Комментарии</a>
                     @endif
                     @admin
                         <a class="float-right text-success" href="{{ route('admin.news.edit', ['news' => $item]) }}">Редактировать</a>

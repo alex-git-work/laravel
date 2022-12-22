@@ -77,6 +77,7 @@ return [
             'driver' => 'redis',
             'connection' => 'cache',
             'lock_connection' => 'default',
+            'ttl' => 2 * 60 * 60,
         ],
 
         'dynamodb' => [

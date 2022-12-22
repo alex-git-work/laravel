@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Cache;
 
 /**
  * This is the model class for table "news".
@@ -43,4 +44,23 @@ class News extends Model implements TagsProvider
     ];
 
     public const MORPH_TYPE = 'news';
+
+    public const CACHE_TAGS = [
+        'news',
+        'tag',
+    ];
+
+    /**
+     * {@inheritdoc}
+     */
+    protected static function boot()
+    {
+        $fn = fn () => Cache::tags(self::CACHE_TAGS)->flush();
+
+        self::created($fn);
+        self::updated($fn);
+        self::deleted($fn);
+
+        parent::boot();
+    }
 }

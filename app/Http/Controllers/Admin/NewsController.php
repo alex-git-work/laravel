@@ -8,6 +8,7 @@ use App\Services\TagsSynchronizer;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Cache;
 
 /**
  * Class NewsController
@@ -22,8 +23,12 @@ class NewsController extends Controller
      */
     public function index(): View
     {
+        $news = Cache::tags(News::CACHE_TAGS)->remember('admin.news.index.page.' . request('page', 1), config('cache.redis.ttl'), function () {
+            return News::paginate(config('pagination.admin_section.news'));
+        });
+
         return view('admin.news.index', [
-            'news' => News::paginate(config('pagination.admin_section.news')),
+            'news' => $news,
         ]);
     }
 
